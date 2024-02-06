@@ -1,7 +1,7 @@
 /** @format */
 
 import { renderLevel } from './modules/level.js';
-import { Enemy } from "./modules/enemy.js";
+import { Enemy, updateEnemies } from "./modules/enemy.js";
 
 const canvas = document.getElementById('canvas');
 export const ctx = canvas.getContext('2d');
@@ -11,22 +11,22 @@ export const placementTiles = [];
 
 let lastTime = 0;
 
-let enemy = new Enemy(10, 0.1);
+new Enemy(10, 0.1);
 update();
 
 function update() {
 	const currentTime = new Date().getTime();
 	const deltaTime = Math.min(currentTime - lastTime, 50);
 	lastTime = currentTime;
-
+	
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+	
 	placementTiles.forEach((tile) => {
 		tile.draw();
 	});
-
+	
     renderLevel();
-    enemy.update(deltaTime);
+    updateEnemies(deltaTime);
 
 	window.requestAnimationFrame(update);
 }

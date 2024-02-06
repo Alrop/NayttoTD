@@ -13,6 +13,7 @@ export class Enemy {
         this.speed = speed;
 
         this.newTarget();
+        enemies.push(this);
     }
 
     update(deltaTime) {
@@ -50,15 +51,23 @@ export class Enemy {
         const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         const normalizedDirection = {
             x: deltaX / magnitude,
-            y: deltaY / magnitude,
+            y: deltaY / magnitude
         };
 
-        this.velocity.x = normalizedDirection.x * this.speed
-        this.velocity.y = normalizedDirection.y * this.speed
+        this.velocity.x = normalizedDirection.x * this.speed;
+        this.velocity.y = normalizedDirection.y * this.speed;
     }
 
     render() {
         ctx.fillStyle = "red";
         ctx.fillRect(this.x, this.y, 32, 32);
     }
+}
+
+export const enemies = [];
+
+export function updateEnemies(deltaTime) {
+    enemies.forEach(enemy => {
+        enemy.update(deltaTime);
+    });
 }
