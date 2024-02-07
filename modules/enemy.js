@@ -1,8 +1,9 @@
 import { ctx, tileSize } from "../main.js";
 import { waypoints } from "./level.js";
+import { takeDamage } from "./player.js";
 
 export class Enemy {
-    constructor(health, speed) {
+    constructor(health, damage, speed) {
         this.x = waypoints[0].x * tileSize;
         this.y = waypoints[0].y * tileSize;
         this.velocity = {x: 0, y: 0};
@@ -10,6 +11,7 @@ export class Enemy {
         this.targetY = 0;
         this.nextWaypoint = 0;
         this.health = health;
+        this.damage = damage;
         this.speed = speed;
 
         this.newTarget();
@@ -41,6 +43,8 @@ export class Enemy {
 
         if (this.nextWaypoint >= waypoints.length) {
             console.log("Enemy got through");
+            takeDamage(this.damage);
+            deleted.push(this);
             return;
         }
         this.targetX = waypoints[this.nextWaypoint].x * tileSize;
@@ -66,6 +70,8 @@ export class Enemy {
 
 export const enemies = [];
 
+const deleted = [];
+
 let timer = 0;
 let nextSpawn = 0;
 let enemySpawn;
@@ -76,11 +82,17 @@ export function updateEnemies(deltaTime) {
         enemy.update(deltaTime);
     });
 
+    deleted.forEach(enemy => {
+        enemies.splice(enemies.indexOf(enemy), 1);
+    });
+
+    deleted.length = 0;
+
     timer += deltaTime;
 
     if (timer > nextSpawn && remainingSpawns > 0) {
         timer -= nextSpawn;
-        new Enemy(enemySpawn.health, enemySpawn.speed);
+        new Enemy(enemySpawn.health, enemySpawn.damage, enemySpawn.speed);
         remainingSpawns--;
     }
 }
