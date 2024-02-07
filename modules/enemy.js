@@ -66,8 +66,28 @@ export class Enemy {
 
 export const enemies = [];
 
+let timer = 0;
+let nextSpawn = 0;
+let enemySpawn;
+let remainingSpawns = 0;
+
 export function updateEnemies(deltaTime) {
     enemies.forEach(enemy => {
         enemy.update(deltaTime);
     });
+
+    timer += deltaTime;
+
+    if (timer > nextSpawn && remainingSpawns > 0) {
+        timer -= nextSpawn;
+        new Enemy(enemySpawn.health, enemySpawn.speed);
+        remainingSpawns--;
+    }
+}
+
+export function spawnWave(enemy, amount, delay) {
+    timer = 0;
+    nextSpawn = delay;
+    enemySpawn = enemy;
+    remainingSpawns = amount;
 }

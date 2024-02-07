@@ -1,7 +1,7 @@
 /** @format */
 
 import { renderLevel, towerInit } from './modules/level.js';
-import { Enemy, updateEnemies } from './modules/enemy.js';
+import { Enemy, spawnWave, updateEnemies } from './modules/enemy.js';
 import { Tower } from './towers.js';
 
 const canvas = document.getElementById('canvas');
@@ -20,7 +20,7 @@ let currentTile = undefined;
 
 let lastTime = 0;
 
-new Enemy(10, 0.1);
+spawnWave({health: 10, speed: 0.1}, 10, 1000);
 update();
 
 function update() {
