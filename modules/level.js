@@ -53,16 +53,6 @@ export function renderLevel() {
 				ctx.fillStyle = 'white';
 				ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
 			}
-			if (tile == 'T') {
-				placementTiles.push(
-					new TowerEmplacement({
-						position: {
-							x: x * tileSize,
-							y: y * tileSize,
-						},
-					})
-				);
-			}
 		}
 	}
 }
