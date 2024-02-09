@@ -1,6 +1,7 @@
 /** @format */
 
 import { ctx, tileSize } from '../main.js';
+import { enemies } from './modules/enemy.js';
 export { TowerEmplacement };
 
 class TowerEmplacement {
@@ -22,8 +23,6 @@ class TowerEmplacement {
 			mousePos.y < this.position.y + this.size
 		) {
 			this.color = 'blue';
-
-			// console.log('Touching tower');
 		} else {
 			this.color = 'green';
 		}
@@ -37,6 +36,27 @@ export class Tower {
 		this.size = tileSize;
 		this.color = 'orange';
 		this.exists = false;
+		this.range = 200;
+		this.target;
+
+		this.projectiles = [
+			new Projectile({
+				position: {
+					x: this.position.x + this.size / 2,
+					y: this.position.y,
+				},
+			}),
+		];
+	}
+	fire() {
+		this.projectiles.push(
+			new Projectile({
+				position: {
+					x: this.position.x + this.size / 2,
+					y: this.position.y,
+				},
+			})
+		);
 	}
 	draw() {
 		ctx.fillStyle = this.color;
@@ -44,5 +64,48 @@ export class Tower {
 	}
 	update() {
 		this.draw();
+	}
+}
+
+export class Projectile {
+	constructor({ position = { x: 0, y: 0 } }) {
+		this.position = position;
+		this.velocity = {
+			x: 0,
+			y: 0,
+		};
+		this.radius = 5;
+	}
+
+	draw() {
+		ctx.beginPath();
+		ctx.arc(
+			this.position.x,
+			this.position.y,
+			this.radius,
+			10,
+			0,
+			Math.PI * 2
+		);
+		ctx.fillStyle = 'yellow';
+		ctx.fill();
+	}
+	update() {
+		this.draw();
+
+		const angleOfAttack = Math.atan2(
+			enemies[0].y + tileSize / 2 - this.position.y,
+			enemies[0].x + tileSize / 2 - this.position.x
+		);
+
+		const velocityMult = 3;
+
+		this.velocity.x = Math.cos(angleOfAttack) * velocityMult;
+		this.velocity.y = Math.sin(angleOfAttack) * velocityMult;
+
+		this.position.x += this.velocity.x;
+		this.position.y += this.velocity.y;
+		console.log(this.position.x);
+		console.log(enemies[0].x);
 	}
 }
