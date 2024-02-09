@@ -20,7 +20,7 @@ let currentTile = undefined;
 
 let lastTime = 0;
 
-spawnWave({health: 10, damage: 1, speed: 0.1}, 10, 1000);
+spawnWave({ health: 10, damage: 1, speed: 0.1 }, 10, 1000);
 update();
 
 function update() {
@@ -28,17 +28,20 @@ function update() {
 	const deltaTime = Math.min(currentTime - lastTime, 50);
 	lastTime = currentTime;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	placementTiles.forEach((tile) => {
 		tile.update(mousePos);
 	});
-	
-    renderLevel();
-    updateEnemies(deltaTime);
+
+	renderLevel();
+	updateEnemies(deltaTime);
 
 	towers.forEach((tower) => {
 		tower.draw();
+		tower.projectiles.forEach((projectile) => {
+			projectile.update();
+		});
 	});
 
 	window.requestAnimationFrame(update);
