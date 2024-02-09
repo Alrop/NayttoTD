@@ -3,6 +3,7 @@
 import { renderLevel, towerInit } from './modules/level.js';
 import { spawnWave, updateEnemies } from './modules/enemy.js';
 import { Tower } from './towers.js';
+import { drawUI } from './modules/player.js';
 
 const canvas = document.getElementById('canvas');
 export const ctx = canvas.getContext('2d');
@@ -40,6 +41,8 @@ function update() {
 	towers.forEach((tower) => {
 		tower.draw();
 	});
+
+	drawUI();
 
 	window.requestAnimationFrame(update);
 }
