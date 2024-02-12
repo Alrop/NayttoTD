@@ -1,6 +1,6 @@
 /** @format */
 
-import { renderLevel, towerInit } from './modules/level.js';
+import { loadLevel, renderLevel } from './modules/level.js';
 import { spawnWave, updateEnemies, enemies } from './modules/enemy.js';
 import {
 	mousePos,
@@ -15,7 +15,8 @@ export const ctx = canvas.getContext('2d');
 
 export const tileSize = 32;
 
-towerInit();
+loadLevel();
+// towerInit();
 
 let lastTime = 0;
 
