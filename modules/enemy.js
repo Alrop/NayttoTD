@@ -16,9 +16,10 @@ export class Enemy {
 		this.damage = damage;
 		this.speed = speed;
 		this.center = {
-			x: 0,
-			y: 0,
+			x: this.x + tileSize / 2,
+			y: this.y + tileSize / 2,
 		};
+		this.radius = 16;
 		this.newTarget();
 		enemies.push(this);
 	}
@@ -78,13 +79,7 @@ export class Enemy {
 
 		ctx.fillStyle = 'orange';
 		ctx.beginPath();
-		ctx.arc(
-			this.x + tileSize / 2,
-			this.y + tileSize / 2,
-			16,
-			0,
-			Math.PI * 2
-		);
+		ctx.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2);
 		ctx.fill();
 	}
 }

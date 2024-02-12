@@ -1,23 +1,21 @@
 /** @format */
 
 import { renderLevel, towerInit } from './modules/level.js';
-import { spawnWave, updateEnemies } from './modules/enemy.js';
-import { Tower } from './towers.js';
+import { spawnWave, updateEnemies, enemies } from './modules/enemy.js';
+import {
+	mousePos,
+	placementTiles,
+	towers,
+	projectileHitDetect,
+} from './modules/utils.js';
 import { drawUI } from './modules/player.js';
 
 const canvas = document.getElementById('canvas');
 export const ctx = canvas.getContext('2d');
 
 export const tileSize = 32;
-export const placementTiles = [];
-export const towers = [];
 
 towerInit();
-const mousePos = {
-	x: undefined,
-	y: undefined,
-};
-let currentTile = undefined;
 
 let lastTime = 0;
 
@@ -40,54 +38,15 @@ function update() {
 
 	towers.forEach((tower) => {
 		tower.draw();
-		tower.projectiles.forEach((projectile) => {
+
+		for (let i = tower.projectiles.length - 1; i >= 0; i--) {
+			const projectile = tower.projectiles[i];
 			projectile.update();
-		});
+			projectileHitDetect(tower, projectile, i);
+		}
 	});
 
 	drawUI();
 
 	window.requestAnimationFrame(update);
 }
-
-// Update mouse position when moved.
-window.addEventListener('mousemove', (event) => {
-	let rect = canvas.getBoundingClientRect();
-	mousePos.x =
-		((event.clientX - rect.left) / (rect.right - rect.left)) * canvas.width;
-	mousePos.y =
-		((event.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height;
-
-	currentTile = null;
-
-	for (let i = 0; i < placementTiles.length; i++) {
-		const tile = placementTiles[i];
-		if (
-			mousePos.x > tile.position.x &&
-			mousePos.x < tile.position.x + tile.size &&
-			mousePos.y > tile.position.y &&
-			mousePos.y < tile.position.y + tile.size
-		) {
-			currentTile = tile;
-			break;
-		}
-	}
-});
-
-// On clock of empty spot, add tower
-canvas.addEventListener('click', (event) => {
-	console.log(towers);
-	console.log(currentTile);
-
-	if (currentTile && !currentTile.exists) {
-		towers.push(
-			new Tower({
-				position: {
-					x: currentTile.position.x,
-					y: currentTile.position.y,
-				},
-			})
-		);
-		currentTile.exists = true;
-	}
-});

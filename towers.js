@@ -2,9 +2,8 @@
 
 import { ctx, tileSize } from '../main.js';
 import { enemies } from './modules/enemy.js';
-export { TowerEmplacement };
 
-class TowerEmplacement {
+export class TowerEmplacement {
 	constructor({ position = { x: 0, y: 0 } }) {
 		this.position = position;
 		this.size = tileSize;
@@ -68,13 +67,14 @@ export class Tower {
 }
 
 export class Projectile {
-	constructor({ position = { x: 0, y: 0 } }) {
+	constructor({ position = { x: 0, y: 0 }, target }) {
 		this.position = position;
 		this.velocity = {
 			x: 0,
 			y: 0,
 		};
 		this.radius = 5;
+		this.target = enemies[0];
 	}
 
 	draw() {
@@ -94,8 +94,8 @@ export class Projectile {
 		this.draw();
 
 		const angleOfAttack = Math.atan2(
-			enemies[0].y + tileSize / 2 - this.position.y,
-			enemies[0].x + tileSize / 2 - this.position.x
+			this.target.center.y - this.position.y,
+			this.target.center.x - this.position.x
 		);
 
 		const velocityMult = 3;
@@ -105,7 +105,7 @@ export class Projectile {
 
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
-		console.log(this.position.x);
-		console.log(enemies[0].x);
+		// console.log(this.position.x);
+		// console.log(enemies[0].x);
 	}
 }
