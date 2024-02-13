@@ -38,7 +38,7 @@ function update() {
 	updateEnemies(deltaTime);
 
 	towers.forEach((tower) => {
-		tower.draw();
+		tower.update();
 
 		for (let i = tower.projectiles.length - 1; i >= 0; i--) {
 			const projectile = tower.projectiles[i];

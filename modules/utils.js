@@ -1,11 +1,13 @@
 /** @format */
 
 import { Tower } from '../towers.js';
+import { enemies } from './enemy.js';
 
 export const mousePos = {
 	x: undefined,
 	y: undefined,
 };
+
 export const towers = [];
 export const placementTiles = [];
 let currentTile = undefined;
@@ -61,5 +63,6 @@ export function projectileHitDetect(tower, projectile, index) {
 	if (distance < projectile.target.radius + projectile.radius) {
 		console.log('hit');
 		tower.projectiles.splice(index, 1);
+		enemies.splice(0, 1);
 	}
 }

@@ -14,7 +14,7 @@ export class TowerEmplacement {
 		ctx.fillRect(this.position.x, this.position.y, this.size, this.size);
 	}
 	update(mousePos) {
-		// Does mouse overlap with this tower emplacement=
+		// Does mouse overlap with this tower emplacement
 		if (
 			mousePos.x > this.position.x &&
 			mousePos.x < this.position.x + this.size &&
@@ -47,22 +47,23 @@ export class Tower {
 			}),
 		];
 	}
-	fire() {
-		this.projectiles.push(
-			new Projectile({
-				position: {
-					x: this.position.x + this.size / 2,
-					y: this.position.y,
-				},
-			})
-		);
-	}
+	shoot() {}
 	draw() {
 		ctx.fillStyle = this.color;
 		ctx.fillRect(this.position.x, this.position.y, this.size, this.size);
 	}
 	update() {
 		this.draw();
+		if (this.projectiles.length == 0) {
+			this.projectiles.push(
+				new Projectile({
+					position: {
+						x: this.position.x + this.size / 2,
+						y: this.position.y,
+					},
+				})
+			);
+		}
 	}
 }
 
