@@ -7,6 +7,7 @@ import {
 	placementTiles,
 	towers,
 	projectileHitDetect,
+	targetRangeValidator,
 } from './modules/utils.js';
 import { drawUI } from './modules/player.js';
 
@@ -39,9 +40,15 @@ function update() {
 	renderLevel();
 	updateEnemies();
 
+	// Check if enemy in range of tower
 	towers.forEach((tower) => {
 		tower.update();
-
+		tower.target = null;
+		const validTarget = enemies.filter((enemy) => {
+			return targetRangeValidator(enemy, tower);
+		});
+		// If true then shoot at enemy
+		tower.target = validTarget[0];
 		for (let i = tower.projectiles.length - 1; i >= 0; i--) {
 			const projectile = tower.projectiles[i];
 			projectile.update();
