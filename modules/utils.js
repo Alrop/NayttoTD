@@ -56,13 +56,24 @@ canvas.addEventListener('click', (event) => {
 });
 
 export function projectileHitDetect(tower, projectile, index) {
-	// If projectile hits enemy, remove projectile
+	// If projectile hits enemy, remove projectile and deal damage to enemy
 	const distanceX = projectile.target.center.x - projectile.position.x;
 	const distanceY = projectile.target.center.y - projectile.position.y;
 	const distance = Math.hypot(distanceX, distanceY);
 	if (distance < projectile.target.radius + projectile.radius) {
-		console.log('hit');
+		console.log('hit for: ' + projectile.damage);
 		tower.projectiles.splice(index, 1);
-		enemies.splice(0, 1);
+		enemies[index].health -= projectile.damage;
+		if (enemies[index].health <= 0) {
+			enemies.splice(0, 1);
+		}
 	}
+}
+
+export function targetRangeValidator(enemy, tower) {
+	// If enemy within range of turret, return True
+	const distanceX = enemy.center.x - tower.position.x;
+	const distanceY = enemy.center.y - tower.position.y;
+	const distance = Math.hypot(distanceX, distanceY);
+	return distance < enemy.radius + tower.range;
 }

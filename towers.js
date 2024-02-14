@@ -33,34 +33,38 @@ export class Tower {
 	constructor({ position = { x: 0, y: 0 } }) {
 		this.position = position;
 		this.size = tileSize;
+		this.center = {
+			x: this.position.x + this.size / 2,
+			y: this.position.y + this.size / 2,
+		};
 		this.color = 'orange';
 		this.exists = false;
 		this.range = 200;
 		this.target;
-
-		this.projectiles = [
-			new Projectile({
-				position: {
-					x: this.position.x + this.size / 2,
-					y: this.position.y,
-				},
-			}),
-		];
+		this.projectiles = [];
 	}
-	shoot() {}
 	draw() {
 		ctx.fillStyle = this.color;
 		ctx.fillRect(this.position.x, this.position.y, this.size, this.size);
+
+		ctx.beginPath();
+		ctx.arc(this.center.x, this.center.y, this.range, 0, Math.PI * 2);
+		ctx.fillStyle = 'rgba(255,255,255,0.2)';
+		ctx.fill();
 	}
+
 	update() {
 		this.draw();
-		if (this.projectiles.length == 0) {
+
+		// Jotenkin lisää lataus aika tähän
+		if (this.target && this.projectiles.length == 0) {
 			this.projectiles.push(
 				new Projectile({
 					position: {
 						x: this.position.x + this.size / 2,
 						y: this.position.y,
 					},
+					target: this.target,
 				})
 			);
 		}
@@ -75,7 +79,8 @@ export class Projectile {
 			y: 0,
 		};
 		this.radius = 5;
-		this.target = enemies[0];
+		this.target = target;
+		this.damage = 2;
 	}
 
 	draw() {
@@ -98,7 +103,7 @@ export class Projectile {
 			this.target.center.y - this.position.y,
 			this.target.center.x - this.position.x
 		);
-
+		// Projektiilin nopeus kerroin
 		const velocityMult = 3;
 
 		this.velocity.x = Math.cos(angleOfAttack) * velocityMult;
@@ -106,7 +111,5 @@ export class Projectile {
 
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
-		// console.log(this.position.x);
-		// console.log(enemies[0].x);
 	}
 }
