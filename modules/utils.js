@@ -55,17 +55,26 @@ canvas.addEventListener('click', (event) => {
 	}
 });
 
+// If projectile hits enemy, remove projectile and deal damage to enemy
 export function projectileHitDetect(tower, projectile, index) {
-	// If projectile hits enemy, remove projectile and deal damage to enemy
 	const distanceX = projectile.target.center.x - projectile.position.x;
 	const distanceY = projectile.target.center.y - projectile.position.y;
 	const distance = Math.hypot(distanceX, distanceY);
 	if (distance < projectile.target.radius + projectile.radius) {
-		console.log('hit for: ' + projectile.damage);
+		// console.log('hit for: ' + projectile.damage);
+		// Remove old projectile
 		tower.projectiles.splice(index, 1);
-		enemies[index].health -= projectile.damage;
-		if (enemies[index].health <= 0) {
-			enemies.splice(0, 1);
+		projectile.target.health -= projectile.damage;
+
+		//Find index of correct enemy, make sure you don't loop over to end, then remove enemy
+		if (projectile.target.health <= 0) {
+			const targetIndex = enemies.findIndex((target) => {
+				return projectile.target === target;
+			});
+
+			if (targetIndex > -1) {
+				enemies.splice(targetIndex, 1);
+			}
 		}
 	}
 }
