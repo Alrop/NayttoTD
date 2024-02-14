@@ -1,7 +1,7 @@
 import { ctx } from "../main.js";
 
+export let gold = 100;
 let lives = 10;
-let gold = 100;
 
 export function takeDamage(damage) {
 	lives -= damage;

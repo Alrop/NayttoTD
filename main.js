@@ -15,17 +15,19 @@ export const ctx = canvas.getContext('2d');
 
 export const tileSize = 32;
 
+export let deltaTime = 0;
+
 loadLevel();
 // towerInit();
 
 let lastTime = 0;
 
-spawnWave({ health: 10, damage: 1, speed: 0.1 }, 10, 1000);
+spawnWave({ health: 10, damage: 1, speed: 0.1, goldValue: 10, walkAnimation: "slime" }, 10, 1000);
 update();
 
 function update() {
 	const currentTime = new Date().getTime();
-	const deltaTime = Math.min(currentTime - lastTime, 50);
+	deltaTime = Math.min(currentTime - lastTime, 50);
 	lastTime = currentTime;
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -35,7 +37,7 @@ function update() {
 	});
 
 	renderLevel();
-	updateEnemies(deltaTime);
+	updateEnemies();
 
 	towers.forEach((tower) => {
 		tower.update();

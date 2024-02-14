@@ -1,11 +1,12 @@
 /** @format */
 
-import { ctx, tileSize } from '../main.js';
+import { ctx, tileSize, deltaTime } from '../main.js';
 import { waypoints } from './level.js';
 import { takeDamage } from './player.js';
+import { newAnimation } from './animation.js';
 
 export class Enemy {
-	constructor(health, damage, speed) {
+	constructor(health, damage, speed, goldValue, walkAnimation) {
 		this.x = waypoints[0].x * tileSize;
 		this.y = waypoints[0].y * tileSize;
 		this.velocity = { x: 0, y: 0 };
@@ -15,6 +16,8 @@ export class Enemy {
 		this.health = health;
 		this.damage = damage;
 		this.speed = speed;
+		this.goldValue = goldValue;
+		this.walkAnimation = walkAnimation;
 		this.center = {
 			x: this.x + tileSize / 2,
 			y: this.y + tileSize / 2,
@@ -73,14 +76,21 @@ export class Enemy {
 		this.velocity.y = normalizedDirection.y * this.speed;
 	}
 
-	render() {
-		ctx.fillStyle = 'red';
-		ctx.fillRect(this.x, this.y, 32, 32);
+	takeDamage(amount) {
+		health -= amount;
+		if (health <= 0) {
+			gold += this.goldValue;
+			deleted.push(this);
+		}
+	}
 
-		ctx.fillStyle = 'orange';
+	render() {
+		this.walkAnimation.drawFrame(this.x, this.y);
+
+		/* ctx.fillStyle = 'orange';
 		ctx.beginPath();
 		ctx.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2);
-		ctx.fill();
+		ctx.fill(); */
 	}
 }
 
@@ -93,7 +103,7 @@ let nextSpawn = 0;
 let enemySpawn;
 let remainingSpawns = 0;
 
-export function updateEnemies(deltaTime) {
+export function updateEnemies() {
 	enemies.forEach((enemy) => {
 		enemy.update(deltaTime);
 	});
@@ -108,7 +118,7 @@ export function updateEnemies(deltaTime) {
 
 	if (timer > nextSpawn && remainingSpawns > 0) {
 		timer -= nextSpawn;
-		new Enemy(enemySpawn.health, enemySpawn.damage, enemySpawn.speed);
+		new Enemy(enemySpawn.health, enemySpawn.damage, enemySpawn.speed, enemySpawn.goldValue, newAnimation(enemySpawn.walkAnimation));
 		remainingSpawns--;
 	}
 }
