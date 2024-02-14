@@ -15,7 +15,7 @@ export class Enemy {
 		this.nextWaypoint = 0;
 		this.health = health;
 		this.damage = damage;
-		this.speed = speed;
+		this.speed = speed / tileSize;
 		this.goldValue = goldValue;
 		this.walkAnimation = walkAnimation;
 		this.center = {
@@ -95,6 +95,10 @@ export class Enemy {
 }
 
 export const enemies = [];
+
+export const enemyData = {
+	slime: { health: 10, damage: 1, speed: 2, goldValue: 10, walkAnimation: "slimeWalk" },
+}
 
 const deleted = [];
 

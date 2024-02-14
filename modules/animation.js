@@ -13,7 +13,7 @@ export class Animation {
     }
 
     drawFrame(x, y) {
-        ctx.drawImage(this.sprite, this.width * this.currentFrame, 0, this.width, this.height, x, y, this.width, this.height);
+        ctx.drawImage(this.sprite, this.width * this.currentFrame, 0, this.width, this.height, Math.round(x), Math.round(y), this.width, this.height);
         this.currentTime += deltaTime;
         if (this.currentTime > this.frametime) {
             this.currentTime -= this.frametime;
@@ -26,7 +26,7 @@ export class Animation {
 }
 
 const animationData = {
-    slime: {file: "../gfx/slime.png", frametime: 100, height: 32, width: 32, frames: 4},
+    slimeWalk: {file: "../gfx/slime.png", frametime: 100, height: 32, width: 32, frames: 4},
 };
 
 export function newAnimation(animation) {

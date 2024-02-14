@@ -1,7 +1,7 @@
 /** @format */
 
 import { loadLevel, renderLevel } from './modules/level.js';
-import { spawnWave, updateEnemies, enemies } from './modules/enemy.js';
+import { spawnWave, updateEnemies, enemies, enemyData } from './modules/enemy.js';
 import {
 	mousePos,
 	placementTiles,
@@ -23,7 +23,7 @@ loadLevel();
 
 let lastTime = 0;
 
-spawnWave({ health: 10, damage: 1, speed: 0.1, goldValue: 10, walkAnimation: "slime" }, 10, 1000);
+spawnWave(enemyData["slime"], 10, 1000);
 update();
 
 function update() {
