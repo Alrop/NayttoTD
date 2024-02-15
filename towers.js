@@ -41,6 +41,7 @@ export class Tower {
 		this.exists = false;
 		this.range = 200;
 		this.target;
+		this.frames = 0;
 		this.projectiles = [];
 	}
 	draw() {
@@ -56,8 +57,12 @@ export class Tower {
 	update() {
 		this.draw();
 
-		// Jotenkin lisää lataus aika tähän
-		if (this.target && this.projectiles.length == 0) {
+		if (
+			this.target &&
+			this.projectiles.length == 0 &&
+			// Shoot every X frames
+			this.frames % 80 === 0
+		) {
 			this.projectiles.push(
 				new Projectile({
 					position: {
@@ -68,6 +73,7 @@ export class Tower {
 				})
 			);
 		}
+		this.frames++;
 	}
 }
 

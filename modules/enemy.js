@@ -13,6 +13,7 @@ export class Enemy {
 		this.targetX = 0;
 		this.targetY = 0;
 		this.nextWaypoint = 0;
+		this.alive = true;
 		this.health = health;
 		this.damage = damage;
 		this.speed = speed / tileSize;
@@ -77,8 +78,12 @@ export class Enemy {
 	}
 
 	takeDamage(amount) {
+		if (!this.alive) {
+			return;
+		}
 		this.health -= amount;
 		if (this.health <= 0) {
+			this.alive = false;
 			setGold(this.goldValue);
 			deleted.push(this);
 		}
