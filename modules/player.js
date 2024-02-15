@@ -1,7 +1,15 @@
 import { ctx } from "../main.js";
 
-export let gold = 100;
+let gold = 100;
 let lives = 10;
+
+export function setGold(amount) {
+    if (gold + amount < 0) {
+        return false;
+    }
+    
+    gold += amount;
+}
 
 export function takeDamage(damage) {
 	lives -= damage;

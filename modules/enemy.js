@@ -2,7 +2,7 @@
 
 import { ctx, tileSize, deltaTime } from '../main.js';
 import { waypoints } from './level.js';
-import { takeDamage } from './player.js';
+import { takeDamage, setGold } from './player.js';
 import { newAnimation } from './animation.js';
 
 export class Enemy {
@@ -77,9 +77,9 @@ export class Enemy {
 	}
 
 	takeDamage(amount) {
-		health -= amount;
-		if (health <= 0) {
-			gold += this.goldValue;
+		this.health -= amount;
+		if (this.health <= 0) {
+			setGold(this.goldValue);
 			deleted.push(this);
 		}
 	}

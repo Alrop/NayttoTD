@@ -63,10 +63,7 @@ export function projectileHitDetect(tower, projectile, index) {
 	if (distance < projectile.target.radius + projectile.radius) {
 		console.log('hit for: ' + projectile.damage);
 		tower.projectiles.splice(index, 1);
-		enemies[index].health -= projectile.damage;
-		if (enemies[index].health <= 0) {
-			enemies.splice(0, 1);
-		}
+		enemies[index].takeDamage(projectile.damage);
 	}
 }
 
