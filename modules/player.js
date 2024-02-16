@@ -1,6 +1,7 @@
 /** @format */
 
 import { ctx } from '../main.js';
+import { totalWave } from './wave.js';
 
 let gold = 100;
 let lives = 10;
@@ -34,4 +35,5 @@ export function drawUI() {
     ctx.font = "16px sans-serif";
     ctx.fillText("Lives: " + lives, 780, 25);
     ctx.fillText("Gold: " + gold, 780, 50);
+    ctx.fillText("Wave: " + totalWave, 780, 75);
 }

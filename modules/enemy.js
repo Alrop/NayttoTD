@@ -30,7 +30,7 @@ export class Enemy {
 		enemies.push(this);
 	}
 
-	update(deltaTime) {
+	update() {
 		const deltaX = this.targetX - this.x;
 		const deltaY = this.targetY - this.y;
 		const distanceToTarget = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -115,10 +115,15 @@ export class Enemy {
 
 export const enemies = [];
 
-export const enemyData = {
+const enemyData = {
 	slime: { health: 10, damage: 1, speed: 1, goldValue: 5, walkAnimationLeft: "slimeWalk", walkAnimationRight: "slimeWalk" },
 	skeleton: { health: 20, damage: 1, speed: 1.5, goldValue: 10, walkAnimationLeft: "skeletonLeft", walkAnimationRight: "skeletonRight" },
 }
+
+export const waveData = [
+    {enemy: enemyData["slime"], amount: 10, spawnDelay: 1000 },
+    {enemy: enemyData["skeleton"], amount: 10, spawnDelay: 1000 },
+]
 
 const deleted = [];
 

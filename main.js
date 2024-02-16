@@ -4,7 +4,6 @@ import { loadLevel, renderLevel } from './modules/level.js';
 import {
 	updateEnemies,
 	enemies,
-	enemyData,
 } from './modules/enemy.js';
 import { updateWave } from './modules/wave.js';
 import {
