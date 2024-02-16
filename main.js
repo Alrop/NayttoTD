@@ -2,11 +2,11 @@
 
 import { loadLevel, renderLevel } from './modules/level.js';
 import {
-	spawnWave,
 	updateEnemies,
 	enemies,
 	enemyData,
 } from './modules/enemy.js';
+import { updateWave } from './modules/wave.js';
 import {
 	mousePos,
 	placementTiles,
@@ -28,7 +28,6 @@ loadLevel();
 
 let lastTime = 0;
 
-spawnWave(enemyData['slime'], 10, 1000);
 update();
 
 function update() {
@@ -44,6 +43,7 @@ function update() {
 
 	renderLevel();
 	updateEnemies();
+	updateWave();
 
 	// Check if enemy in range of tower
 	towers.forEach((tower) => {

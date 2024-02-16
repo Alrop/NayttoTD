@@ -6,19 +6,21 @@ import { takeDamage, setGold } from './player.js';
 import { newAnimation } from './animation.js';
 
 export class Enemy {
-	constructor(health, damage, speed, goldValue, walkAnimation) {
+	constructor(health, damage, speed, goldValue, walkAnimationLeft, walkAnimationRight) {
 		this.x = waypoints[0].x * tileSize;
 		this.y = waypoints[0].y * tileSize;
 		this.velocity = { x: 0, y: 0 };
 		this.targetX = 0;
 		this.targetY = 0;
 		this.nextWaypoint = 0;
+		this.facingDirection = "right";
 		this.alive = true;
 		this.health = health;
 		this.damage = damage;
 		this.speed = speed / tileSize;
 		this.goldValue = goldValue;
-		this.walkAnimation = walkAnimation;
+		this.walkAnimationLeft = newAnimation(walkAnimationLeft);
+		this.walkAnimationRight = newAnimation(walkAnimationRight);
 		this.center = {
 			x: this.x + tileSize / 2,
 			y: this.y + tileSize / 2,
@@ -49,6 +51,13 @@ export class Enemy {
 			x: this.x + this.velocity.x + 16,
 			y: this.y + this.velocity.y + 16,
 		};
+
+		if (this.velocity.x > 0) {
+			this.facingDirection = "right";
+		}
+		else if (this.velocity.x < 0) {
+			this.facingDirection = "left";
+		}
 
 		this.render();
 	}
@@ -90,7 +99,12 @@ export class Enemy {
 	}
 
 	render() {
-		this.walkAnimation.drawFrame(this.x, this.y);
+		if (this.facingDirection == "right") {
+			this.walkAnimationRight.drawFrame(this.x, this.y);
+		}
+		else {
+			this.walkAnimationLeft.drawFrame(this.x, this.y);
+		}
 
 		/* ctx.fillStyle = 'orange';
 		ctx.beginPath();
@@ -102,15 +116,11 @@ export class Enemy {
 export const enemies = [];
 
 export const enemyData = {
-	slime: { health: 10, damage: 1, speed: 2, goldValue: 10, walkAnimation: "slimeWalk" },
+	slime: { health: 10, damage: 1, speed: 1, goldValue: 5, walkAnimationLeft: "slimeWalk", walkAnimationRight: "slimeWalk" },
+	skeleton: { health: 20, damage: 1, speed: 1.5, goldValue: 10, walkAnimationLeft: "skeletonLeft", walkAnimationRight: "skeletonRight" },
 }
 
 const deleted = [];
-
-let timer = 0;
-let nextSpawn = 0;
-let enemySpawn;
-let remainingSpawns = 0;
 
 export function updateEnemies() {
 	enemies.forEach((enemy) => {
@@ -122,19 +132,4 @@ export function updateEnemies() {
 	});
 
 	deleted.length = 0;
-
-	timer += deltaTime;
-
-	if (timer > nextSpawn && remainingSpawns > 0) {
-		timer -= nextSpawn;
-		new Enemy(enemySpawn.health, enemySpawn.damage, enemySpawn.speed, enemySpawn.goldValue, newAnimation(enemySpawn.walkAnimation));
-		remainingSpawns--;
-	}
-}
-
-export function spawnWave(enemy, amount, delay) {
-	timer = 0;
-	nextSpawn = delay;
-	enemySpawn = enemy;
-	remainingSpawns = amount;
 }

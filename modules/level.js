@@ -32,7 +32,7 @@ const level = [
 ];
 
 export const waypoints = [
-	{ x: 3, y: 0 },
+	{ x: 3, y: -1 },
 	{ x: 3, y: 11 },
 	{ x: 7, y: 11 },
 	{ x: 7, y: 3 },
@@ -42,7 +42,7 @@ export const waypoints = [
 	{ x: 12, y: 16 },
 	{ x: 16, y: 16 },
 	{ x: 16, y: 12 },
-	{ x: 23, y: 12 },
+	{ x: 24, y: 12 },
 ];
 
 const tiles = [];

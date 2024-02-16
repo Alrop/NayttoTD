@@ -21,6 +21,6 @@ export function takeDamage(damage) {
 export function drawUI() {
     ctx.fillStyle = "white";
     ctx.font = "16px sans-serif";
-    ctx.fillText("Lives: " + lives, 800, 24);
-    ctx.fillText("Gold: " + gold, 800, 48);
+    ctx.fillText("Lives: " + lives, 780, 25);
+    ctx.fillText("Gold: " + gold, 780, 50);
 }

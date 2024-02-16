@@ -27,6 +27,8 @@ export class Animation {
 
 const animationData = {
     slimeWalk: {file: "../gfx/slime.png", frametime: 100, height: 32, width: 32, frames: 4},
+    skeletonLeft: {file: "../gfx/skeleton_left.png", frametime: 120, height: 32, width: 32, frames: 6},
+    skeletonRight: {file: "../gfx/skeleton_right.png", frametime: 120, height: 32, width: 32, frames: 6},
 };
 
 export function newAnimation(animation) {
