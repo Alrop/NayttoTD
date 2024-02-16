@@ -2,6 +2,7 @@
 
 import { Tower } from '../towers.js';
 import { enemies } from './enemy.js';
+import { canAfford } from './player.js';
 
 export const mousePos = {
 	x: undefined,
@@ -38,10 +39,10 @@ window.addEventListener('mousemove', (event) => {
 
 // On click of empty spot, add tower
 canvas.addEventListener('click', (event) => {
-	console.log(towers);
-	console.log(currentTile);
+	// console.log(towers);
+	// console.log(currentTile);
 
-	if (currentTile && !currentTile.exists) {
+	if (currentTile && !currentTile.exists && canAfford(50)) {
 		// gold -= 60;
 		towers.push(
 			new Tower({
@@ -65,7 +66,7 @@ export function projectileHitDetect(tower, projectile, index) {
 		// Remove old projectile
 		tower.projectiles.splice(index, 1);
 		projectile.target.takeDamage(projectile.damage);
-		
+
 		/* projectile.target.health -= projectile.damage;
 
 		//Find index of correct enemy, make sure you don't loop over to end, then remove enemy

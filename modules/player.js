@@ -1,20 +1,31 @@
-import { ctx } from "../main.js";
+/** @format */
+
+import { ctx } from '../main.js';
 
 let gold = 100;
 let lives = 10;
 
 export function setGold(amount) {
-    if (gold + amount < 0) {
-        return false;
-    }
-    
-    gold += amount;
+	if (gold + amount < 0) {
+		return false;
+	}
+
+	gold += amount;
+}
+
+export function canAfford(cost) {
+	if (cost <= gold) {
+		gold -= cost;
+		return true;
+	} else {
+		return false;
+	}
 }
 
 export function takeDamage(damage) {
 	lives -= damage;
 	if (lives <= 0) {
-        console.log("game over");
+		console.log('game over');
 	}
 }
 

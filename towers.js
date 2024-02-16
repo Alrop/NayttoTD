@@ -2,11 +2,15 @@
 
 import { ctx, tileSize } from '../main.js';
 import { enemies } from './modules/enemy.js';
-
+import { mousePos } from './modules/utils.js';
 export class TowerEmplacement {
 	constructor({ position = { x: 0, y: 0 } }) {
 		this.position = position;
 		this.size = tileSize;
+		this.center = {
+			x: this.position.x + this.size / 2,
+			y: this.position.y + this.size / 2,
+		};
 		this.color = 'green';
 	}
 	draw() {
@@ -48,10 +52,18 @@ export class Tower {
 		ctx.fillStyle = this.color;
 		ctx.fillRect(this.position.x, this.position.y, this.size, this.size);
 
-		ctx.beginPath();
-		ctx.arc(this.center.x, this.center.y, this.range, 0, Math.PI * 2);
-		ctx.fillStyle = 'rgba(255,255,255,0.2)';
-		ctx.fill();
+		if (
+			mousePos.x > this.position.x &&
+			mousePos.x < this.position.x + this.size &&
+			mousePos.y > this.position.y &&
+			mousePos.y < this.position.y + this.size
+		) {
+			ctx.beginPath();
+			ctx.arc(this.center.x, this.center.y, this.range, 0, Math.PI * 2);
+			ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+			ctx.lineWidth = 4;
+			ctx.stroke();
+		}
 	}
 
 	update() {
@@ -104,7 +116,7 @@ export class Projectile {
 	}
 	update() {
 		this.draw();
-
+		//projektiilin ja vihollisen kohtauskulma
 		const angleOfAttack = Math.atan2(
 			this.target.center.y - this.position.y,
 			this.target.center.x - this.position.x
