@@ -48,27 +48,27 @@ export const waypoints = [
 const tiles = [];
 
 const pathLR = new Image();
-pathLR.src = "../gfx/tiles/path_lr.png";
+pathLR.src = '../gfx/tiles/path_lr.png';
 const pathUD = new Image();
-pathUD.src = "../gfx/tiles/path_ud.png";
+pathUD.src = '../gfx/tiles/path_ud.png';
 const pathDL = new Image();
-pathDL.src = "../gfx/tiles/path_dl.png";
+pathDL.src = '../gfx/tiles/path_dl.png';
 const pathDR = new Image();
-pathDR.src = "../gfx/tiles/path_dr.png";
+pathDR.src = '../gfx/tiles/path_dr.png';
 const pathUL = new Image();
-pathUL.src = "../gfx/tiles/path_ul.png";
+pathUL.src = '../gfx/tiles/path_ul.png';
 const pathUR = new Image();
-pathUR.src = "../gfx/tiles/path_ur.png";
+pathUR.src = '../gfx/tiles/path_ur.png';
 const empty = new Image();
-empty.src = "../gfx/tiles/grass.png";
+empty.src = '../gfx/tiles/grass.png';
 const empty1 = new Image();
-empty1.src = "../gfx/tiles/grass1.png";
+empty1.src = '../gfx/tiles/grass1.png';
 const empty2 = new Image();
-empty2.src = "../gfx/tiles/grass2.png";
+empty2.src = '../gfx/tiles/grass2.png';
 const empty3 = new Image();
-empty3.src = "../gfx/tiles/flowers.png";
+empty3.src = '../gfx/tiles/flowers.png';
 const towerPlace = new Image();
-towerPlace.src = "../gfx/tiles/tower_spot.png";
+towerPlace.src = '../gfx/tiles/tower_spot.png';
 
 export function renderLevel() {
 	for (let y = 0; y < tiles.length; y++) {
@@ -76,46 +76,46 @@ export function renderLevel() {
 		for (let x = 0; x < row.length; x++) {
 			const tile = tiles[y][x];
 			switch (tile) {
-				case "path_lr":
+				case 'path_lr':
 					ctx.drawImage(pathLR, x * tileSize, y * tileSize);
 					break;
 
-				case "path_ud":
+				case 'path_ud':
 					ctx.drawImage(pathUD, x * tileSize, y * tileSize);
 					break;
-				
-				case "path_dl":
+
+				case 'path_dl':
 					ctx.drawImage(pathDL, x * tileSize, y * tileSize);
 					break;
-				
-				case "path_dr":
+
+				case 'path_dr':
 					ctx.drawImage(pathDR, x * tileSize, y * tileSize);
 					break;
-				
-				case "path_ul":
+
+				case 'path_ul':
 					ctx.drawImage(pathUL, x * tileSize, y * tileSize);
 					break;
-				
-				case "path_ur":
+
+				case 'path_ur':
 					ctx.drawImage(pathUR, x * tileSize, y * tileSize);
 					break;
-				
-				case "empty1":
+
+				case 'empty1':
 					ctx.drawImage(empty1, x * tileSize, y * tileSize);
 					break;
-				
-				case "empty2":
+
+				case 'empty2':
 					ctx.drawImage(empty2, x * tileSize, y * tileSize);
 					break;
 
-				case "empty3":
+				case 'empty3':
 					ctx.drawImage(empty3, x * tileSize, y * tileSize);
 					break;
 
-				case "towerPlace":
-					ctx.drawImage(towerPlace, x * tileSize, y * tileSize);
-					break;
-			
+				// case "towerPlace":
+				// 	ctx.drawImage(towerPlace, x * tileSize, y * tileSize);
+				// 	break;
+
 				default:
 					ctx.drawImage(empty, x * tileSize, y * tileSize);
 					break;
@@ -133,13 +133,13 @@ export function loadLevel() {
 			switch (tile) {
 				case '.':
 					const randomTile = Math.floor(Math.random() * 4);
-					newRow.push("empty" + randomTile);
+					newRow.push('empty' + randomTile);
 					break;
 				case '#':
-					newRow.push("path");
+					newRow.push('path');
 					break;
 				case 'T':
-					newRow.push("towerPlace");
+					newRow.push('towerPlace');
 					placementTiles.push(
 						new TowerEmplacement({
 							position: {
@@ -150,7 +150,7 @@ export function loadLevel() {
 					);
 					break;
 				default:
-					newRow.push("other");
+					newRow.push('other');
 					break;
 			}
 		}
@@ -164,44 +164,39 @@ export function loadLevel() {
 			let tile = tiles[y][x];
 			let above;
 			try {
-				above = tiles[y-1][x];
+				above = tiles[y - 1][x];
 			} catch {
-				above = "path";
+				above = 'path';
 			}
 			let below;
 			try {
-				below = tiles[y+1][x];
+				below = tiles[y + 1][x];
 			} catch {
-				below = "path";
+				below = 'path';
 			}
 			let left;
 			try {
-				left = tiles[y][x-1];
+				left = tiles[y][x - 1];
 			} catch {
-				left = "path";
+				left = 'path';
 			}
-			if (tile == "path") {
-				if (above.includes("path")) {
-					if (below.includes("path")) {
-						tiles[y][x] = "path_ud";
+			if (tile == 'path') {
+				if (above.includes('path')) {
+					if (below.includes('path')) {
+						tiles[y][x] = 'path_ud';
+					} else if (left.includes('path')) {
+						tiles[y][x] = 'path_ul';
+					} else {
+						tiles[y][x] = 'path_ur';
 					}
-					else if (left.includes("path")) {
-						tiles[y][x] = "path_ul";
+				} else if (below.includes('path')) {
+					if (left.includes('path')) {
+						tiles[y][x] = 'path_dl';
+					} else {
+						tiles[y][x] = 'path_dr';
 					}
-					else {
-						tiles[y][x] = "path_ur";
-					}
-				}
-				else if (below.includes("path")) {
-					if (left.includes("path")) {
-						tiles[y][x] = "path_dl";
-					}
-					else {
-						tiles[y][x] = "path_dr";
-					}
-				}
-				else {
-					tiles[y][x] = "path_lr";
+				} else {
+					tiles[y][x] = 'path_lr';
 				}
 			}
 		}

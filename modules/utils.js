@@ -1,9 +1,10 @@
 /** @format */
 
-import { Tower } from '../towers.js';
+import { TowerArcher, TowerMagic } from '../towers.js';
 import { enemies } from './enemy.js';
 import { canAfford } from './player.js';
-
+import { ctx } from '../main.js';
+import { btnArcher, btnMagic } from './ui.js';
 export const mousePos = {
 	x: undefined,
 	y: undefined,
@@ -11,7 +12,8 @@ export const mousePos = {
 
 export const towers = [];
 export const placementTiles = [];
-let currentTile = undefined;
+export let currentTile = undefined;
+export let activeTower = undefined;
 
 // Update mouse position when moved.
 window.addEventListener('mousemove', (event) => {
@@ -21,8 +23,9 @@ window.addEventListener('mousemove', (event) => {
 	mousePos.y =
 		((event.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height;
 
-	currentTile = null;
-
+	if (!activeTower) {
+		currentTile = undefined;
+	}
 	for (let i = 0; i < placementTiles.length; i++) {
 		const tile = placementTiles[i];
 		if (
@@ -35,17 +38,26 @@ window.addEventListener('mousemove', (event) => {
 			break;
 		}
 	}
+	// console.log(currentTile);
 });
 
 // On click of empty spot, add tower
 canvas.addEventListener('click', (event) => {
 	// console.log(towers);
-	// console.log(currentTile);
-
-	if (currentTile && !currentTile.exists && canAfford(50)) {
-		// gold -= 60;
+	if (activeTower != currentTile && !currentTile.exists) {
+		activeTower = currentTile;
+	}
+	console.log(currentTile);
+	console.log(activeTower);
+	// console.log(TowerArcher.cost);
+	if (
+		activeTower &&
+		boundingBox(btnArcher) &&
+		!currentTile.exists &&
+		canAfford(TowerArcher.cost)
+	) {
 		towers.push(
-			new Tower({
+			new TowerArcher({
 				position: {
 					x: currentTile.position.x,
 					y: currentTile.position.y,
@@ -53,8 +65,45 @@ canvas.addEventListener('click', (event) => {
 			})
 		);
 		currentTile.exists = true;
+		currentTile = undefined;
+		activeTower = undefined;
+	} else if (
+		activeTower &&
+		boundingBox(btnMagic) &&
+		!currentTile.exists &&
+		canAfford(TowerMagic.cost)
+	) {
+		towers.push(
+			new TowerMagic({
+				position: {
+					x: currentTile.position.x,
+					y: currentTile.position.y,
+				},
+			})
+		);
+		currentTile.exists = true;
+		currentTile = undefined;
+		activeTower = undefined;
+	} else if (
+		currentTile?.active &&
+		activeTower === currentTile &&
+		!boundingBox(btnArcher) &&
+		!boundingBox(btnMagic)
+	) {
+		btnMagic;
+		currentTile = undefined;
+		activeTower = undefined;
 	}
 });
+
+function boundingBox(object) {
+	return (
+		mousePos.x > object.position.x &&
+		mousePos.x < object.position.x + object.size.x &&
+		mousePos.y > object.position.y &&
+		mousePos.y < object.position.y + object.size.y
+	);
+}
 
 // If projectile hits enemy, remove projectile and deal damage to enemy
 export function projectileHitDetect(tower, projectile, index) {
