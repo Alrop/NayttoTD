@@ -31,6 +31,8 @@ const animationData = {
     skeletonRight: {file: "../gfx/skeleton_right.png", frametime: 120, height: 32, width: 32, frames: 6},
     goblinLeft: {file: "../gfx/goblin_left.png", frametime: 80, height: 32, width: 32, frames: 6},
     goblinRight: {file: "../gfx/goblin_right.png", frametime: 80, height: 32, width: 32, frames: 6},
+    wispLeft: {file: "../gfx/wisp_left.png", frametime: 100, height: 32, width: 32, frames: 6},
+    wispRight: {file: "../gfx/wisp_right.png", frametime: 100, height: 32, width: 32, frames: 6},
 };
 
 export function newAnimation(animation) {

@@ -119,12 +119,14 @@ const enemyData = {
 	slime: { health: 10, damage: 1, speed: 1, goldValue: 5, walkAnimationLeft: "slimeWalk", walkAnimationRight: "slimeWalk" },
 	skeleton: { health: 20, damage: 1, speed: 1.5, goldValue: 10, walkAnimationLeft: "skeletonLeft", walkAnimationRight: "skeletonRight" },
 	goblin: { health: 5, damage: 1, speed: 2.2, goldValue: 2, walkAnimationLeft: "goblinLeft", walkAnimationRight: "goblinRight" },
+	wisp: { health: 40, damage: 1, speed: 0.8, goldValue: 10, walkAnimationLeft: "wispLeft", walkAnimationRight: "wispRight" },
 }
 
 export const waveData = [
 	{enemy: enemyData["slime"], amount: 10, spawnDelay: 1000 },
     {enemy: enemyData["skeleton"], amount: 10, spawnDelay: 1000 },
 	{enemy: enemyData["goblin"], amount: 25, spawnDelay: 400 },
+	{enemy: enemyData["wisp"], amount: 10, spawnDelay: 1500 },
 ]
 
 const deleted = [];
