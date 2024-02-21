@@ -1,14 +1,19 @@
 /** @format */
 
 import { ctx, tileSize } from '../main.js';
-import { enemies } from './modules/enemy.js';
-import { mousePos, activeTower } from './modules/utils.js';
+import { mousePos, activeTile } from './modules/utils.js';
 import { openMenu } from './modules/ui.js';
+import { towerPlace } from './modules/level.js';
 
-const towerPlace = new Image();
-towerPlace.src = '../gfx/tiles/tower_spot.png';
 const archerImg = new Image();
 archerImg.src = '../gfx/tower_archer.png';
+const arrowImg = new Image();
+arrowImg.src = '../gfx/projectile.png';
+
+const mageImg = new Image();
+mageImg.src = '../gfx/tower_mage.png';
+const magicImg = new Image();
+magicImg.src = '../gfx/projectile_magic.png';
 
 export class TowerEmplacement {
 	constructor({ position = { x: 0, y: 0 } }) {
@@ -21,6 +26,7 @@ export class TowerEmplacement {
 		this.exists = false;
 		this.active = false;
 	}
+
 	draw() {
 		ctx.drawImage(
 			towerPlace,
@@ -40,7 +46,7 @@ export class TowerEmplacement {
 	update() {
 		this.draw();
 
-		if (this == activeTower) {
+		if (this == activeTile) {
 			openMenu(this);
 			this.active = true;
 		} else {
@@ -68,16 +74,16 @@ export class TowerArcher {
 			x: this.position.x + this.size / 2,
 			y: this.position.y + this.size / 2,
 		};
+		this.range = 200;
+		this.reloadSpeed = 80;
+		this.reload = 0;
 
 		// Projectile stats
 		this.projectiles = [];
-		this.range = 200;
 		this.target;
-		this.radius = 5;
 		this.damage = 2;
 		this.velocityMult = 3;
-		this.color = 'yellow';
-		this.reload = 0;
+		this.projectileImg = arrowImg;
 	}
 	draw() {
 		ctx.drawImage(
@@ -109,7 +115,7 @@ export class TowerArcher {
 			this.target &&
 			this.projectiles.length == 0 &&
 			// Shoot every X reload
-			this.reload % 80 === 0
+			this.reload % this.reloadSpeed === 0
 		) {
 			this.projectiles.push(
 				new Projectile({
@@ -118,10 +124,10 @@ export class TowerArcher {
 						y: this.position.y,
 					},
 					target: this.target,
-					radius: this.radius,
+					size: this.size,
 					damage: this.damage,
 					velocityMult: this.velocityMult,
-					color: this.color,
+					projectileImg: this.projectileImg,
 				})
 			);
 		}
@@ -130,7 +136,7 @@ export class TowerArcher {
 }
 
 export class TowerMagic {
-	static cost = 75;
+	static cost = 70;
 	constructor({ position = { x: 0, y: 0 } }) {
 		this.position = position;
 		this.size = tileSize;
@@ -138,20 +144,20 @@ export class TowerMagic {
 			x: this.position.x + this.size / 2,
 			y: this.position.y + this.size / 2,
 		};
+		this.range = 180;
+		this.reloadSpeed = 120;
+		this.reload = 0;
 
 		// Projectile stats
 		this.projectiles = [];
-		this.range = 180;
 		this.target;
-		this.radius = 5;
 		this.damage = 5;
 		this.velocityMult = 3;
-		this.color = 'Blue';
-		this.reload = 0;
+		this.projectileImg = magicImg;
 	}
 	draw() {
 		ctx.drawImage(
-			archerImg,
+			mageImg,
 			this.position.x,
 			this.position.y,
 			this.size,
@@ -179,7 +185,7 @@ export class TowerMagic {
 			this.target &&
 			this.projectiles.length == 0 &&
 			// Shoot every X reload
-			this.reload % 120 === 0
+			this.reload % this.reloadSpeed === 0
 		) {
 			this.projectiles.push(
 				new Projectile({
@@ -188,10 +194,10 @@ export class TowerMagic {
 						y: this.position.y,
 					},
 					target: this.target,
-					radius: this.radius,
+					size: this.size,
 					damage: this.damage,
 					velocityMult: this.velocityMult,
-					color: this.color,
+					projectileImg: this.projectileImg,
 				})
 			);
 		}
@@ -203,35 +209,30 @@ export class Projectile {
 	constructor({
 		position = { x: 0, y: 0 },
 		target,
-		radius,
 		damage,
 		velocityMult,
-		color,
+		projectileImg,
 	}) {
 		this.position = position;
+		this.size = projectileImg.width;
 		this.velocity = {
 			x: 0,
 			y: 0,
 		};
 		this.target = target;
-		this.radius = radius;
 		this.damage = damage;
 		this.velocityMult = velocityMult;
-		this.color = color;
+		this.projectileImg = projectileImg;
 	}
 
 	draw() {
-		ctx.beginPath();
-		ctx.arc(
+		ctx.drawImage(
+			this.projectileImg,
 			this.position.x,
 			this.position.y,
-			this.radius,
-			10,
-			0,
-			Math.PI * 2
+			this.size,
+			this.size
 		);
-		ctx.fillStyle = this.color;
-		ctx.fill();
 	}
 	update() {
 		this.draw();

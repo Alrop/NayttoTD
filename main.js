@@ -1,13 +1,9 @@
 /** @format */
 
 import { loadLevel, renderLevel } from './modules/level.js';
-import {
-	updateEnemies,
-	enemies,
-} from './modules/enemy.js';
+import { updateEnemies, enemies } from './modules/enemy.js';
 import { updateWave } from './modules/wave.js';
 import {
-	mousePos,
 	placementTiles,
 	towers,
 	projectileHitDetect,
@@ -36,11 +32,10 @@ function update() {
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	placementTiles.forEach((tile) => {
-		tile.update(mousePos);
-	});
-
 	renderLevel();
+	placementTiles.forEach((tile) => {
+		tile.update();
+	});
 	updateEnemies();
 	updateWave();
 

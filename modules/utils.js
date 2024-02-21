@@ -1,10 +1,10 @@
 /** @format */
 
 import { TowerArcher, TowerMagic } from '../towers.js';
-import { enemies } from './enemy.js';
 import { canAfford } from './player.js';
-import { ctx } from '../main.js';
-import { btnArcher, btnMagic } from './ui.js';
+import { btnArcher, btnMage } from './ui.js';
+
+let rect = canvas.getBoundingClientRect();
 export const mousePos = {
 	x: undefined,
 	y: undefined,
@@ -12,20 +12,21 @@ export const mousePos = {
 
 export const towers = [];
 export const placementTiles = [];
-export let currentTile = undefined;
-export let activeTower = undefined;
+export let activeTile = undefined;
+export let hoverTile = undefined;
 
 // Update mouse position when moved.
 window.addEventListener('mousemove', (event) => {
-	let rect = canvas.getBoundingClientRect();
 	mousePos.x =
 		((event.clientX - rect.left) / (rect.right - rect.left)) * canvas.width;
 	mousePos.y =
 		((event.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height;
+});
 
-	if (!activeTower) {
-		currentTile = undefined;
-	}
+// On click of empty emplacement, open tower shop
+canvas.addEventListener('click', (event) => {
+	// console.log(towers);
+
 	for (let i = 0; i < placementTiles.length; i++) {
 		const tile = placementTiles[i];
 		if (
@@ -34,68 +35,61 @@ window.addEventListener('mousemove', (event) => {
 			mousePos.y > tile.position.y &&
 			mousePos.y < tile.position.y + tile.size
 		) {
-			currentTile = tile;
+			activeTile = tile;
 			break;
 		}
 	}
-	// console.log(currentTile);
-});
 
-// On click of empty spot, add tower
-canvas.addEventListener('click', (event) => {
-	// console.log(towers);
-	if (activeTower != currentTile && !currentTile.exists) {
-		activeTower = currentTile;
-	}
-	console.log(currentTile);
-	console.log(activeTower);
+	console.log(activeTile);
 	// console.log(TowerArcher.cost);
+	console.log(btnArcher);
 	if (
-		activeTower &&
+		activeTile &&
 		boundingBox(btnArcher) &&
-		!currentTile.exists &&
+		!activeTile.exists &&
 		canAfford(TowerArcher.cost)
 	) {
 		towers.push(
 			new TowerArcher({
 				position: {
-					x: currentTile.position.x,
-					y: currentTile.position.y,
+					x: activeTile.position.x,
+					y: activeTile.position.y,
 				},
 			})
 		);
-		currentTile.exists = true;
-		currentTile = undefined;
-		activeTower = undefined;
+		activeTile.exists = true;
+		activeTile = undefined;
+		activeTile = undefined;
 	} else if (
-		activeTower &&
-		boundingBox(btnMagic) &&
-		!currentTile.exists &&
+		activeTile &&
+		boundingBox(btnMage) &&
+		!activeTile.exists &&
 		canAfford(TowerMagic.cost)
 	) {
 		towers.push(
 			new TowerMagic({
 				position: {
-					x: currentTile.position.x,
-					y: currentTile.position.y,
+					x: activeTile.position.x,
+					y: activeTile.position.y,
 				},
 			})
 		);
-		currentTile.exists = true;
-		currentTile = undefined;
-		activeTower = undefined;
+		activeTile.exists = true;
+		activeTile = undefined;
+		activeTile = undefined;
 	} else if (
-		currentTile?.active &&
-		activeTower === currentTile &&
+		activeTile?.active &&
+		activeTile === activeTile &&
 		!boundingBox(btnArcher) &&
-		!boundingBox(btnMagic)
+		!boundingBox(btnMage)
 	) {
-		btnMagic;
-		currentTile = undefined;
-		activeTower = undefined;
+		btnMage;
+		activeTile = undefined;
+		activeTile = undefined;
 	}
 });
 
+// Check if mouse over element
 function boundingBox(object) {
 	return (
 		mousePos.x > object.position.x &&
@@ -110,24 +104,11 @@ export function projectileHitDetect(tower, projectile, index) {
 	const distanceX = projectile.target.center.x - projectile.position.x;
 	const distanceY = projectile.target.center.y - projectile.position.y;
 	const distance = Math.hypot(distanceX, distanceY);
-	if (distance < projectile.target.radius + projectile.radius) {
+	if (distance < projectile.target.radius - projectile.size) {
 		// console.log('hit for: ' + projectile.damage);
 		// Remove old projectile
 		tower.projectiles.splice(index, 1);
 		projectile.target.takeDamage(projectile.damage);
-
-		/* projectile.target.health -= projectile.damage;
-
-		//Find index of correct enemy, make sure you don't loop over to end, then remove enemy
-		if (projectile.target.health <= 0) {
-			const targetIndex = enemies.findIndex((target) => {
-				return projectile.target === target;
-			});
-
-			if (targetIndex > -1) {
-				enemies.splice(targetIndex, 1);
-			}
-		} */
 	}
 }
 

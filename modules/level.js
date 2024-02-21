@@ -10,7 +10,7 @@ import { placementTiles } from './utils.js';
 
 const level = [
 	'...#....................',
-	'...#....................',
+	'...#.T..................',
 	'...#....................',
 	'...#...##############...',
 	'...#...#............#...',
@@ -67,7 +67,7 @@ const empty2 = new Image();
 empty2.src = '../gfx/tiles/grass2.png';
 const empty3 = new Image();
 empty3.src = '../gfx/tiles/flowers.png';
-const towerPlace = new Image();
+export const towerPlace = new Image();
 towerPlace.src = '../gfx/tiles/tower_spot.png';
 
 export function renderLevel() {
@@ -146,6 +146,7 @@ export function loadLevel() {
 								x: x * tileSize,
 								y: y * tileSize,
 							},
+							towerPlace,
 						})
 					);
 					break;

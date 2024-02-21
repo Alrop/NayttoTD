@@ -1,32 +1,24 @@
 /** @format */
 
 import { ctx } from '../main.js';
+const btnArcherImg = new Image();
+btnArcherImg.src = '../gfx/shop_archer.png';
+
+const btnMageImg = new Image();
+btnMageImg.src = '../gfx/shop_mage.png';
+
 export const btnArcher = {
 	position: { x: 780, y: 200 },
-	size: { x: 170, y: 100 },
+	size: { x: btnArcherImg.width, y: btnArcherImg.height },
 	text: 'Archer tower',
 };
-export const btnMagic = {
+export const btnMage = {
 	position: { x: 780, y: 310 },
-	size: { x: 170, y: 100 },
+	size: { x: btnMageImg.width, y: btnMageImg.height },
 	text: 'Magic tower',
 };
+
 export function openMenu() {
-	ctx.fillStyle = 'green';
-	ctx.fillRect(
-		btnArcher.position.x,
-		btnArcher.position.y,
-		btnArcher.size.x,
-		btnArcher.size.y
-	);
-	ctx.fillStyle = 'blue';
-	ctx.fillRect(
-		btnMagic.position.x,
-		btnMagic.position.y,
-		btnMagic.size.x,
-		btnMagic.size.y
-	);
-	ctx.fillStyle = 'white';
-	ctx.fillText(btnArcher.text, 820, 250, 100);
-	ctx.fillText(btnMagic.text, 820, 350, 100);
+	ctx.drawImage(btnArcherImg, btnArcher.position.x, btnArcher.position.y);
+	ctx.drawImage(btnMageImg, btnMage.position.x, btnMage.position.y);
 }
