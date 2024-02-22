@@ -29,7 +29,9 @@ export function canAfford(cost) {
 }
 
 export function takeDamage(damage) {
-	lives -= damage;
+	if (!gameOver) {
+		lives -= damage;
+	}
 	if (lives <= 0) {
 		gameOver = true;
 		console.log('game over');

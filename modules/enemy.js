@@ -105,11 +105,6 @@ export class Enemy {
 		else {
 			this.walkAnimationLeft.drawFrame(this.x, this.y);
 		}
-
-		/* ctx.fillStyle = 'orange';
-		ctx.beginPath();
-		ctx.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2);
-		ctx.fill(); */
 	}
 }
 
