@@ -1,5 +1,6 @@
 import { deltaTime } from "../main.js";
 import { Enemy, enemies, waveData } from "./enemy.js";
+import { gameOver } from "./player.js";
 
 const waveDelay = 10000;
 
@@ -12,6 +13,10 @@ let enemySpawn;
 let remainingSpawns = 0;
 
 export function updateWave() {
+    if (gameOver) {
+        return;
+    }
+
     waveTimer += deltaTime;
 
     if (waveTimer < waveDelay) {
