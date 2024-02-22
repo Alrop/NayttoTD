@@ -4,7 +4,6 @@ import { TowerArcher, TowerMagic } from '../towers.js';
 import { canAfford } from './player.js';
 import { btnArcher, btnMage } from './ui.js';
 
-let rect = canvas.getBoundingClientRect();
 export const mousePos = {
 	x: undefined,
 	y: undefined,
@@ -16,7 +15,8 @@ export let activeTile = undefined;
 export let hoverTile = undefined;
 
 // Update mouse position when moved.
-window.addEventListener('mousemove', (event) => {
+canvas.addEventListener('mousemove', (event) => {
+	let rect = canvas.getBoundingClientRect();
 	mousePos.x =
 		((event.clientX - rect.left) / (rect.right - rect.left)) * canvas.width;
 	mousePos.y =
