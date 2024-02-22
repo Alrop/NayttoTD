@@ -9,13 +9,11 @@ btnMageImg.src = '../gfx/shop_mage.png';
 
 export const btnArcher = {
 	position: { x: 780, y: 200 },
-	size: { x: btnArcherImg.width, y: btnArcherImg.height },
-	text: 'Archer tower',
+	size: { x: btnArcherImg.width || 170, y: btnArcherImg.height || 100 },
 };
 export const btnMage = {
 	position: { x: 780, y: 310 },
-	size: { x: btnMageImg.width, y: btnMageImg.height },
-	text: 'Magic tower',
+	size: { x: btnMageImg.width || 170, y: btnMageImg.height || 100 },
 };
 
 export function openMenu() {
