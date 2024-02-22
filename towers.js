@@ -4,6 +4,8 @@ import { ctx, tileSize } from '../main.js';
 import { mousePos, activeTile } from './modules/utils.js';
 import { openMenu } from './modules/ui.js';
 import { towerPlace } from './modules/level.js';
+import { boundingBox } from './modules/utils.js';
+import { btnArcher, btnMage } from './modules/ui.js';
 
 const archerImg = new Image();
 archerImg.src = '../gfx/tower_archer.png';
@@ -14,6 +16,27 @@ const mageImg = new Image();
 mageImg.src = '../gfx/tower_mage.png';
 const magicImg = new Image();
 magicImg.src = '../gfx/projectile_magic.png';
+
+export const towersData = {
+	archer: {
+		cost: 50,
+		range: 200,
+		damage: 8,
+		reloadSpeed: 50,
+		velocityMult: 3,
+		towerImg: archerImg,
+		projectileImg: arrowImg,
+	},
+	mage: {
+		cost: 70,
+		range: 180,
+		damage: 16,
+		reloadSpeed: 80,
+		velocityMult: 3,
+		towerImg: mageImg,
+		projectileImg: magicImg,
+	},
+};
 
 export class TowerEmplacement {
 	constructor({ position = { x: 0, y: 0 } }) {
@@ -41,6 +64,32 @@ export class TowerEmplacement {
 			ctx.fillStyle = 'rgba(255,255,255,0.4)';
 			ctx.fill();
 		}
+		if (this.active && boundingBox(btnArcher)) {
+			ctx.beginPath();
+			ctx.arc(
+				this.center.x,
+				this.center.y,
+				towersData.archer.range,
+				0,
+				Math.PI * 2
+			);
+			ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+			ctx.lineWidth = 4;
+			ctx.stroke();
+		}
+		if (this.active && boundingBox(btnMage)) {
+			ctx.beginPath();
+			ctx.arc(
+				this.center.x,
+				this.center.y,
+				towersData.mage.range,
+				0,
+				Math.PI * 2
+			);
+			ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+			ctx.lineWidth = 4;
+			ctx.stroke();
+		}
 	}
 
 	update() {
@@ -65,29 +114,27 @@ export class TowerEmplacement {
 	}
 }
 
-export class TowerArcher {
-	static cost = 50;
-	constructor({ position = { x: 0, y: 0 } }) {
+export class Tower {
+	constructor({ position = { x: 0, y: 0 }, tower }) {
 		this.position = position;
+		for (let property in tower) {
+			if (tower.hasOwnProperty(property)) {
+				this[property] = tower[property];
+			}
+		}
 		this.size = tileSize;
+
 		this.center = {
 			x: this.position.x + this.size / 2,
 			y: this.position.y + this.size / 2,
 		};
-		this.range = 200;
-		this.reloadSpeed = 80;
-		this.reload = 0;
 
-		// Projectile stats
 		this.projectiles = [];
-		this.target;
-		this.damage = 2;
-		this.velocityMult = 3;
-		this.projectileImg = arrowImg;
+		this.reload = 0;
 	}
 	draw() {
 		ctx.drawImage(
-			archerImg,
+			this.towerImg,
 			this.position.x,
 			this.position.y,
 			this.size,
@@ -123,81 +170,13 @@ export class TowerArcher {
 						x: this.position.x + this.size / 2,
 						y: this.position.y,
 					},
-					target: this.target,
-					size: this.size,
-					damage: this.damage,
-					velocityMult: this.velocityMult,
-					projectileImg: this.projectileImg,
-				})
-			);
-		}
-		this.reload++;
-	}
-}
-
-export class TowerMagic {
-	static cost = 70;
-	constructor({ position = { x: 0, y: 0 } }) {
-		this.position = position;
-		this.size = tileSize;
-		this.center = {
-			x: this.position.x + this.size / 2,
-			y: this.position.y + this.size / 2,
-		};
-		this.range = 180;
-		this.reloadSpeed = 120;
-		this.reload = 0;
-
-		// Projectile stats
-		this.projectiles = [];
-		this.target;
-		this.damage = 5;
-		this.velocityMult = 3;
-		this.projectileImg = magicImg;
-	}
-	draw() {
-		ctx.drawImage(
-			mageImg,
-			this.position.x,
-			this.position.y,
-			this.size,
-			this.size
-		);
-
-		if (
-			mousePos.x > this.position.x &&
-			mousePos.x < this.position.x + this.size &&
-			mousePos.y > this.position.y &&
-			mousePos.y < this.position.y + this.size
-		) {
-			ctx.beginPath();
-			ctx.arc(this.center.x, this.center.y, this.range, 0, Math.PI * 2);
-			ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-			ctx.lineWidth = 4;
-			ctx.stroke();
-		}
-	}
-
-	update() {
-		this.draw();
-
-		if (
-			this.target &&
-			this.projectiles.length == 0 &&
-			// Shoot every X reload
-			this.reload % this.reloadSpeed === 0
-		) {
-			this.projectiles.push(
-				new Projectile({
-					position: {
-						x: this.position.x + this.size / 2,
-						y: this.position.y,
+					projectile: {
+						target: this.target,
+						size: this.projectileImg.width,
+						damage: this.damage,
+						velocityMult: this.velocityMult,
+						projectileImg: this.projectileImg,
 					},
-					target: this.target,
-					size: this.size,
-					damage: this.damage,
-					velocityMult: this.velocityMult,
-					projectileImg: this.projectileImg,
 				})
 			);
 		}
@@ -206,23 +185,17 @@ export class TowerMagic {
 }
 
 export class Projectile {
-	constructor({
-		position = { x: 0, y: 0 },
-		target,
-		damage,
-		velocityMult,
-		projectileImg,
-	}) {
+	constructor({ position = { x: 0, y: 0 }, projectile }) {
 		this.position = position;
-		this.size = projectileImg.width;
+		for (let property in projectile) {
+			if (projectile.hasOwnProperty(property)) {
+				this[property] = projectile[property];
+			}
+		}
 		this.velocity = {
 			x: 0,
 			y: 0,
 		};
-		this.target = target;
-		this.damage = damage;
-		this.velocityMult = velocityMult;
-		this.projectileImg = projectileImg;
 	}
 
 	draw() {

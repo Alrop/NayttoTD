@@ -1,6 +1,6 @@
 /** @format */
 
-import { TowerArcher, TowerMagic } from '../towers.js';
+import { Tower, towersData } from '../towers.js';
 import { canAfford } from './player.js';
 import { btnArcher, btnMage } from './ui.js';
 
@@ -46,14 +46,15 @@ canvas.addEventListener('click', (event) => {
 		activeTile &&
 		boundingBox(btnArcher) &&
 		!activeTile.exists &&
-		canAfford(TowerArcher.cost)
+		canAfford(towersData.archer.cost)
 	) {
 		towers.push(
-			new TowerArcher({
+			new Tower({
 				position: {
 					x: activeTile.position.x,
 					y: activeTile.position.y,
 				},
+				tower: towersData.archer,
 			})
 		);
 		activeTile.exists = true;
@@ -63,14 +64,15 @@ canvas.addEventListener('click', (event) => {
 		activeTile &&
 		boundingBox(btnMage) &&
 		!activeTile.exists &&
-		canAfford(TowerMagic.cost)
+		canAfford(towersData.mage.cost)
 	) {
 		towers.push(
-			new TowerMagic({
+			new Tower({
 				position: {
 					x: activeTile.position.x,
 					y: activeTile.position.y,
 				},
+				tower: towersData.mage,
 			})
 		);
 		activeTile.exists = true;
@@ -89,7 +91,7 @@ canvas.addEventListener('click', (event) => {
 });
 
 // Check if mouse over element
-function boundingBox(object) {
+export function boundingBox(object) {
 	return (
 		mousePos.x > object.position.x &&
 		mousePos.x < object.position.x + object.size.x &&
