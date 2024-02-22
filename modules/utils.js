@@ -40,9 +40,8 @@ canvas.addEventListener('click', (event) => {
 		}
 	}
 
-	console.log(activeTile);
+	// console.log(activeTile);
 	// console.log(TowerArcher.cost);
-	console.log(btnArcher);
 	if (
 		activeTile &&
 		boundingBox(btnArcher) &&
