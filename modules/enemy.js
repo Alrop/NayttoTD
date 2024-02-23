@@ -29,6 +29,11 @@ export class Enemy {
 		this.newTarget();
 		enemies.push(this);
 	}
+	
+	static spawnEnemy(name, healthMult) {
+		const enemy = enemyData[name];
+		new Enemy(enemy.health * healthMult, enemy.damage, enemy.speed, enemy.goldValue, enemy.walkAnimationLeft, enemy.walkAnimationRight);
+	}
 
 	update() {
 		const deltaX = this.targetX - this.x;
@@ -117,14 +122,6 @@ const enemyData = {
 	wisp: { health: 40, damage: 1, speed: 0.8, goldValue: 10, walkAnimationLeft: "wispLeft", walkAnimationRight: "wispRight" },
 	death: { health: 350, damage: 10, speed: 1, goldValue: 100, walkAnimationLeft: "deathLeft", walkAnimationRight: "deathRight" },
 }
-
-export const waveData = [
-	{enemy: enemyData["slime"], amount: 10, spawnDelay: 1000 },
-    {enemy: enemyData["skeleton"], amount: 10, spawnDelay: 1000 },
-	{enemy: enemyData["goblin"], amount: 25, spawnDelay: 400 },
-	{enemy: enemyData["wisp"], amount: 10, spawnDelay: 1500 },
-	{enemy: enemyData["death"], amount: 1, spawnDelay: 0 },
-]
 
 const deleted = [];
 
