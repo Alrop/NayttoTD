@@ -45,7 +45,7 @@ export const waypoints = [
 	{ x: 24, y: 12 },
 ];
 
-const tiles = [];
+export const tiles = [];
 
 const pathLR = new Image();
 pathLR.src = '../gfx/tiles/path_lr.png';

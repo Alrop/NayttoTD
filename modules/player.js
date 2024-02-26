@@ -1,15 +1,17 @@
 /** @format */
 
-import { ctx, canvas, deltaTime } from '../main.js';
+import { ctx, canvas, deltaTime, restart } from '../main.js';
 import { totalWave } from './wave.js';
 
 export let gameOver = false;
 
 const gameOverFadeInTime = 1000;
-let gameOverTimer = 0;
+const startingLives = 10;
+const startingGold = 100;
 
-let gold = 100;
-let lives = 10;
+let gameOverTimer = 0;
+let gold = startingGold;
+let lives = startingLives;
 
 export function setGold(amount) {
 	if (gold + amount < 0) {
@@ -68,5 +70,16 @@ export function drawUI() {
 		// Reset values
 		ctx.globalAlpha = 1.0;
 		ctx.shadowColor = "rgba(0, 0, 0, 0)";
+
+		if (gameOverTimer > 15000) {
+			restart();
+		}
 	}
+}
+
+export function resetPlayer() {
+	gameOver = false;
+	gameOverTimer = 0;
+	gold = startingGold;
+	lives = startingLives;
 }

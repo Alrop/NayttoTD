@@ -1,15 +1,15 @@
 /** @format */
 
-import { loadLevel, renderLevel } from './modules/level.js';
+import { loadLevel, renderLevel, tiles } from './modules/level.js';
 import { updateEnemies, enemies } from './modules/enemy.js';
-import { updateWave } from './modules/wave.js';
+import { resetWave, updateWave } from './modules/wave.js';
 import {
 	placementTiles,
 	towers,
 	projectileHitDetect,
 	targetRangeValidator,
 } from './modules/utils.js';
-import { drawUI } from './modules/player.js';
+import { drawUI, resetPlayer } from './modules/player.js';
 
 export const canvas = document.getElementById('canvas');
 export const ctx = canvas.getContext('2d');
@@ -58,4 +58,15 @@ function update() {
 	drawUI();
 
 	window.requestAnimationFrame(update);
+}
+
+export function restart() {
+	tiles.length = 0;
+	enemies.length = 0;
+	placementTiles.length = 0;
+	towers.length = 0;
+
+	resetPlayer();
+	resetWave();
+	loadLevel();
 }

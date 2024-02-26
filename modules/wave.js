@@ -52,6 +52,12 @@ export function updateWave() {
 	}
 }
 
+export function resetWave() {
+    totalWave = 0;
+    currentWave = 0;
+    waveTimer = waveDelay;
+}
+
 function spawnWave(enemy, amount, spawnDelay) {
     waveTimer = 0;
 	spawnTimer = 0;
