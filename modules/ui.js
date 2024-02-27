@@ -29,7 +29,7 @@ export function shopMenu(tile) {
 	ctx.drawImage(btnMageImg, btnSecond.position.x, btnSecond.position.y);
 	// Darken UI elements which player can't afford
 	ctx.fillStyle = 'rgba(0,0,0,0.4)';
-	if (towersData.archer.cost > gold) {
+	if (towersData.archer.cost > gold && !tile.tower) {
 		ctx.fillRect(
 			btnFirst.position.x,
 			btnFirst.position.y,
@@ -37,7 +37,7 @@ export function shopMenu(tile) {
 			btnFirst.size.y
 		);
 	}
-	if (towersData.mage.cost > gold) {
+	if (towersData.mage.cost > gold && !tile.tower) {
 		ctx.fillRect(
 			btnSecond.position.x,
 			btnSecond.position.y,
@@ -48,39 +48,44 @@ export function shopMenu(tile) {
 }
 
 export function upgradeMenu(tile) {
+	ctx.fillStyle = 'rgba(0,0,0,0.4)';
+
 	switch (tile.name) {
 		// Check active tower name, then show upgrade to that tower
+		// If player can't afford upgrade, darken menu icon
 		case 'towerArcherT1':
 			ctx.drawImage(
 				btnArcherUpImg,
 				btnFirst.position.x,
 				btnFirst.position.y
 			);
+			if (
+				tile.name == 'towerArcherT1' &&
+				towersData.archer.costUpgrade > gold
+			) {
+				ctx.fillRect(
+					btnFirst.position.x,
+					btnFirst.position.y,
+					btnFirst.size.x,
+					btnFirst.size.y
+				);
+			}
 			break;
+
 		case 'towerMageT1':
 			ctx.drawImage(
 				btnMageUpImg,
 				btnFirst.position.x,
 				btnFirst.position.y
 			);
-			break;
-	}
-	// Darken UI elements which player can't afford
-	ctx.fillStyle = 'rgba(0,0,0,0.4)';
-	if (towersData.archer.costUpgrade > gold) {
-		ctx.fillRect(
-			btnFirst.position.x,
-			btnFirst.position.y,
-			btnFirst.size.x,
-			btnFirst.size.y
-		);
-	}
-	if (towersData.mage.costUpgrade > gold) {
-		ctx.fillRect(
-			btnFirst.position.x,
-			btnFirst.position.y,
-			btnFirst.size.x,
-			btnFirst.size.y
-		);
+			if (towersData.mage.costUpgrade > gold) {
+				ctx.fillRect(
+					btnFirst.position.x,
+					btnFirst.position.y,
+					btnFirst.size.x,
+					btnFirst.size.y
+				);
+				break;
+			}
 	}
 }
