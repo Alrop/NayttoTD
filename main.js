@@ -35,26 +35,24 @@ function update() {
 	renderLevel();
 	placementTiles.forEach((tile) => {
 		tile.update();
+		if (tile.tower) {
+			tile.tower.update();
+			tile.tower.target = null;
+			// Check if enemy in range of tower
+			const validTarget = enemies.filter((enemy) => {
+				return targetRangeValidator(enemy, tile.tower);
+			});
+			// If true then shoot at enemy
+			tile.tower.target = validTarget[0];
+			for (let i = tile.tower.projectiles.length - 1; i >= 0; i--) {
+				const projectile = tile.tower.projectiles[i];
+				projectile.update();
+				projectileHitDetect(tile.tower, projectile, i);
+			}
+		}
 	});
 	updateEnemies();
 	updateWave();
-
-	// Check if enemy in range of tower
-	towers.forEach((tower) => {
-		tower.update();
-		tower.target = null;
-		const validTarget = enemies.filter((enemy) => {
-			return targetRangeValidator(enemy, tower);
-		});
-		// If true then shoot at enemy
-		tower.target = validTarget[0];
-		for (let i = tower.projectiles.length - 1; i >= 0; i--) {
-			const projectile = tower.projectiles[i];
-			projectile.update();
-			projectileHitDetect(tower, projectile, i);
-		}
-	});
-
 	drawUI();
 
 	window.requestAnimationFrame(update);

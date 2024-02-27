@@ -12,7 +12,6 @@ export const mousePos = {
 export const towers = [];
 export const placementTiles = [];
 export let activeTile = undefined;
-export let hoverTile = undefined;
 
 // Update mouse position when moved.
 canvas.addEventListener('mousemove', (event) => {
@@ -23,10 +22,8 @@ canvas.addEventListener('mousemove', (event) => {
 		((event.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height;
 });
 
-// On click of empty emplacement, open tower shop
-canvas.addEventListener('click', (event) => {
-	// console.log(towers);
-
+// Find if emplacement is clicked
+canvas.addEventListener('click', () => {
 	for (let i = 0; i < placementTiles.length; i++) {
 		const tile = placementTiles[i];
 		if (
@@ -39,53 +36,52 @@ canvas.addEventListener('click', (event) => {
 			break;
 		}
 	}
-
 	// console.log(activeTile);
-	// console.log(TowerArcher.cost);
+
 	if (
 		activeTile &&
 		boundingBox(btnArcher) &&
-		!activeTile.exists &&
+		!activeTile.tower &&
 		canAfford(towersData.archer.cost)
 	) {
-		towers.push(
-			new Tower({
-				position: {
-					x: activeTile.position.x,
-					y: activeTile.position.y,
-				},
-				tower: towersData.archer,
-			})
-		);
-		activeTile.exists = true;
-		activeTile = undefined;
-		activeTile = undefined;
+		activeTile.tower = new Tower({
+			position: {
+				x: activeTile.position.x,
+				y: activeTile.position.y,
+			},
+			tower: towersData.archer,
+		});
 	} else if (
 		activeTile &&
 		boundingBox(btnMage) &&
-		!activeTile.exists &&
+		!activeTile.tower &&
 		canAfford(towersData.mage.cost)
 	) {
-		towers.push(
-			new Tower({
-				position: {
-					x: activeTile.position.x,
-					y: activeTile.position.y,
-				},
-				tower: towersData.mage,
-			})
-		);
-		activeTile.exists = true;
-		activeTile = undefined;
-		activeTile = undefined;
+		activeTile.tower = new Tower({
+			position: {
+				x: activeTile.position.x,
+				y: activeTile.position.y,
+			},
+			tower: towersData.mage,
+		});
+	} else if (
+		boundingBox(btnArcher) &&
+		activeTile?.tower?.name == 'towerArcherT1' &&
+		canAfford(towersData.archer.costUpgrade)
+	) {
+		console.log('Triggered archer upgrade');
+		activeTile.tower.upgrade();
+	} else if (
+		boundingBox(btnArcher) &&
+		activeTile?.tower?.name == 'towerMageT1' &&
+		canAfford(towersData.mage.costUpgrade)
+	) {
+		activeTile.tower.upgrade();
 	} else if (
 		activeTile?.active &&
-		activeTile === activeTile &&
 		!boundingBox(btnArcher) &&
 		!boundingBox(btnMage)
 	) {
-		btnMage;
-		activeTile = undefined;
 		activeTile = undefined;
 	}
 });
@@ -100,8 +96,8 @@ export function boundingBox(object) {
 	);
 }
 
-// If projectile hits enemy, remove projectile and deal damage to enemy
 export function projectileHitDetect(tower, projectile, index) {
+	// If projectile hits enemy, remove projectile and deal damage to enemy
 	const distanceX = projectile.target.center.x - projectile.position.x;
 	const distanceY = projectile.target.center.y - projectile.position.y;
 	const distance = Math.hypot(distanceX, distanceY);
