@@ -2,19 +2,19 @@
 
 import { Tower, towersData } from '../towers.js';
 import { canAfford } from './player.js';
-import { btnArcher, btnMage } from './ui.js';
+import { btnFirst, btnSecond } from './ui.js';
 
 export const mousePos = {
 	x: undefined,
 	y: undefined,
 };
 
-export const towers = [];
+export const towers = []; /*Deprecated*/
 export const placementTiles = [];
 export let activeTile = undefined;
 
-// Update mouse position when moved.
 canvas.addEventListener('mousemove', (event) => {
+	// Update mouse position when moved.
 	let rect = canvas.getBoundingClientRect();
 	mousePos.x =
 		((event.clientX - rect.left) / (rect.right - rect.left)) * canvas.width;
@@ -22,8 +22,8 @@ canvas.addEventListener('mousemove', (event) => {
 		((event.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height;
 });
 
-// Find if emplacement is clicked
 canvas.addEventListener('click', () => {
+	// Find if emplacement is clicked
 	for (let i = 0; i < placementTiles.length; i++) {
 		const tile = placementTiles[i];
 		if (
@@ -38,9 +38,10 @@ canvas.addEventListener('click', () => {
 	}
 	// console.log(activeTile);
 
+	// If emplacement is selected, build or upgrade towers
 	if (
 		activeTile &&
-		boundingBox(btnArcher) &&
+		boundingBox(btnFirst) &&
 		!activeTile.tower &&
 		canAfford(towersData.archer.cost)
 	) {
@@ -53,7 +54,7 @@ canvas.addEventListener('click', () => {
 		});
 	} else if (
 		activeTile &&
-		boundingBox(btnMage) &&
+		boundingBox(btnSecond) &&
 		!activeTile.tower &&
 		canAfford(towersData.mage.cost)
 	) {
@@ -65,22 +66,22 @@ canvas.addEventListener('click', () => {
 			tower: towersData.mage,
 		});
 	} else if (
-		boundingBox(btnArcher) &&
+		boundingBox(btnFirst) &&
 		activeTile?.tower?.name == 'towerArcherT1' &&
 		canAfford(towersData.archer.costUpgrade)
 	) {
 		console.log('Triggered archer upgrade');
 		activeTile.tower.upgrade();
 	} else if (
-		boundingBox(btnArcher) &&
+		boundingBox(btnFirst) &&
 		activeTile?.tower?.name == 'towerMageT1' &&
 		canAfford(towersData.mage.costUpgrade)
 	) {
 		activeTile.tower.upgrade();
 	} else if (
 		activeTile?.active &&
-		!boundingBox(btnArcher) &&
-		!boundingBox(btnMage)
+		!boundingBox(btnFirst) &&
+		!boundingBox(btnSecond)
 	) {
 		activeTile = undefined;
 	}

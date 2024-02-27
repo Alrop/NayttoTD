@@ -1,50 +1,86 @@
 /** @format */
 
 import { ctx } from '../main.js';
+import { towersData } from '../towers.js';
+import { gold } from './player.js';
+// Archer shop icons
 const btnArcherImg = new Image();
 btnArcherImg.src = '../gfx/shop_archer.png';
 const btnArcherUpImg = new Image();
 btnArcherUpImg.src = '../gfx/shoparcherUp.png';
-
+// Mage shop icons
 const btnMageImg = new Image();
 btnMageImg.src = '../gfx/shop_mage.png';
 const btnMageUpImg = new Image();
 btnMageUpImg.src = '../gfx/shopmageUp.png';
 
-export const btnArcher = {
+export const btnFirst = {
 	position: { x: 780, y: 200 },
-	size: { x: btnArcherImg.width || 170, y: btnArcherImg.height || 100 },
+	size: { x: 170, y: 100 },
 };
 
-export const btnMage = {
+export const btnSecond = {
 	position: { x: 780, y: 310 },
-	size: { x: btnMageImg.width || 170, y: btnMageImg.height || 100 },
-};
-export const btnMageUp = {
-	position: { x: 780, y: 200 },
-	size: { x: btnMageImg.width || 170, y: btnMageImg.height || 100 },
+	size: { x: 170, y: 100 },
 };
 
 export function shopMenu(tile) {
-	ctx.drawImage(btnArcherImg, btnArcher.position.x, btnArcher.position.y);
-	ctx.drawImage(btnMageImg, btnMage.position.x, btnMage.position.y);
+	ctx.drawImage(btnArcherImg, btnFirst.position.x, btnFirst.position.y);
+	ctx.drawImage(btnMageImg, btnSecond.position.x, btnSecond.position.y);
+	// Darken UI elements which player can't afford
+	ctx.fillStyle = 'rgba(0,0,0,0.4)';
+	if (towersData.archer.cost > gold) {
+		ctx.fillRect(
+			btnFirst.position.x,
+			btnFirst.position.y,
+			btnFirst.size.x,
+			btnFirst.size.y
+		);
+	}
+	if (towersData.mage.cost > gold) {
+		ctx.fillRect(
+			btnSecond.position.x,
+			btnSecond.position.y,
+			btnSecond.size.x,
+			btnSecond.size.y
+		);
+	}
 }
+
 export function upgradeMenu(tile) {
-	// Check active tower name, then show upgrade to that tower
 	switch (tile.name) {
+		// Check active tower name, then show upgrade to that tower
 		case 'towerArcherT1':
 			ctx.drawImage(
 				btnArcherUpImg,
-				btnArcher.position.x,
-				btnArcher.position.y
+				btnFirst.position.x,
+				btnFirst.position.y
 			);
 			break;
 		case 'towerMageT1':
 			ctx.drawImage(
 				btnMageUpImg,
-				btnArcher.position.x,
-				btnArcher.position.y
+				btnFirst.position.x,
+				btnFirst.position.y
 			);
 			break;
+	}
+	// Darken UI elements which player can't afford
+	ctx.fillStyle = 'rgba(0,0,0,0.4)';
+	if (towersData.archer.costUpgrade > gold) {
+		ctx.fillRect(
+			btnFirst.position.x,
+			btnFirst.position.y,
+			btnFirst.size.x,
+			btnFirst.size.y
+		);
+	}
+	if (towersData.mage.costUpgrade > gold) {
+		ctx.fillRect(
+			btnFirst.position.x,
+			btnFirst.position.y,
+			btnFirst.size.x,
+			btnFirst.size.y
+		);
 	}
 }

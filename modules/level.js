@@ -1,7 +1,7 @@
 /** @format */
 
 import { ctx, tileSize } from '../main.js';
-import { TowerEmplacement } from '../towers.js';
+import { TowerEmplacement } from '../emplacement.js';
 import { placementTiles } from './utils.js';
 
 // . = empty
