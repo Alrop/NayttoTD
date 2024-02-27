@@ -3,6 +3,8 @@
 import { Tower, towersData } from '../towers.js';
 import { canAfford } from './player.js';
 import { btnFirst, btnSecond } from './ui.js';
+import { levelSelectButtons } from './levelSelect.js';
+import { playing } from '../main.js';
 
 export const mousePos = {
 	x: undefined,
@@ -23,6 +25,18 @@ canvas.addEventListener('mousemove', (event) => {
 });
 
 canvas.addEventListener('click', () => {
+	if (!playing) {
+		// Check level select button clicks
+		for (let i = 0; i < levelSelectButtons.length; i++) {
+			const button = levelSelectButtons[i];
+			if (boundingBox(button)) {
+				button.clicked();
+				break;
+			}
+		}
+		return;
+	}
+
 	// Find if emplacement is clicked
 	for (let i = 0; i < placementTiles.length; i++) {
 		const tile = placementTiles[i];

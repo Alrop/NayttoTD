@@ -71,7 +71,7 @@ export function drawUI() {
 		ctx.globalAlpha = 1.0;
 		ctx.shadowColor = 'rgba(0, 0, 0, 0)';
 
-		if (gameOverTimer > 15000) {
+		if (gameOverTimer > 11000) {
 			restart();
 		}
 	}
