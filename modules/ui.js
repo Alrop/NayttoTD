@@ -7,12 +7,12 @@ import { gold } from './player.js';
 const btnArcherImg = new Image();
 btnArcherImg.src = './gfx/shop_archer.png';
 const btnArcherUpImg = new Image();
-btnArcherUpImg.src = './gfx/shoparcherUp.png';
+btnArcherUpImg.src = './gfx/shopArcherUp.png';
 // Mage shop icons
 const btnMageImg = new Image();
 btnMageImg.src = './gfx/shop_mage.png';
 const btnMageUpImg = new Image();
-btnMageUpImg.src = './gfx/shopmageUp.png';
+btnMageUpImg.src = './gfx/shopMageUp.png';
 
 export const btnFirst = {
 	position: { x: 780, y: 200 },
