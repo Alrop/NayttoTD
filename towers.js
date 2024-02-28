@@ -1,6 +1,7 @@
 /** @format */
 
 import { ctx, tileSize } from '../main.js';
+import { deltaTime } from './main.js';
 import { Projectile } from './projectile.js';
 
 // Archer tower and projectile images
@@ -25,14 +26,14 @@ export const towersData = {
 		costUpgrade: 60,
 		range: 200,
 		damage: 6,
-		reloadSpeed: 100,
-		velocityMult: 5,
+		reloadSpeed: 1000,
+		velocityMult: 0.5,
 		towerImg: archerImg,
 		projectileImg: arrowImg,
 		// Upgrade modifiers. Negative reloadSpeed == faster shooting
 		rangeUp: 30,
 		damageUp: 2,
-		reloadSpeedUp: -20,
+		reloadSpeedUp: -200,
 	},
 	mage: {
 		name: 'towerMageT1',
@@ -40,14 +41,14 @@ export const towersData = {
 		costUpgrade: 80,
 		range: 180,
 		damage: 12,
-		reloadSpeed: 150,
-		velocityMult: 8,
+		reloadSpeed: 1500,
+		velocityMult: 0.8,
 		towerImg: mageImg,
 		projectileImg: magicImg,
 		// Upgrade modifiers. Negative reloadSpeed == faster shooting
 		rangeUp: 20,
 		damageUp: 4,
-		reloadSpeedUp: -20,
+		reloadSpeedUp: -200,
 	},
 };
 
@@ -109,8 +110,9 @@ export class Tower {
 	update() {
 		this.draw();
 
-		if (this.target && this.reload % this.reloadSpeed === 0) {
+		if (this.target && this.reload > this.reloadSpeed) {
 			// Target in range and reload calculation remainder == 0, fire projectile
+			this.reload = 0;
 			this.projectiles.push(
 				new Projectile({
 					position: {
@@ -127,6 +129,6 @@ export class Tower {
 				})
 			);
 		}
-		this.reload++;
+		this.reload += deltaTime;
 	}
 }

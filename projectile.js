@@ -1,5 +1,5 @@
 /** @format */
-import { ctx } from './main.js';
+import { ctx, deltaTime } from './main.js';
 
 export class Projectile {
 	constructor({ position = { x: 0, y: 0 }, projectile }) {
@@ -34,8 +34,8 @@ export class Projectile {
 		this.velocity.x = Math.cos(angleOfAttack) * this.velocityMult;
 		this.velocity.y = Math.sin(angleOfAttack) * this.velocityMult;
 
-		this.position.x += this.velocity.x;
-		this.position.y += this.velocity.y;
+		this.position.x += this.velocity.x * deltaTime;
+		this.position.y += this.velocity.y * deltaTime;
 	}
 	update() {
 		this.trajectory();
