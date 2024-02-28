@@ -27,15 +27,15 @@ export class Animation {
 }
 
 const animationData = {
-    slimeWalk: {file: "../gfx/slime.png", frametime: 100, height: 32, width: 32, frames: 4},
-    skeletonLeft: {file: "../gfx/skeleton_left.png", frametime: 120, height: 32, width: 32, frames: 6},
-    skeletonRight: {file: "../gfx/skeleton_right.png", frametime: 120, height: 32, width: 32, frames: 6},
-    goblinLeft: {file: "../gfx/goblin_left.png", frametime: 80, height: 32, width: 32, frames: 6},
-    goblinRight: {file: "../gfx/goblin_right.png", frametime: 80, height: 32, width: 32, frames: 6},
-    wispLeft: {file: "../gfx/wisp_left.png", frametime: 100, height: 32, width: 32, frames: 6},
-    wispRight: {file: "../gfx/wisp_right.png", frametime: 100, height: 32, width: 32, frames: 6},
-    deathLeft: {file: "../gfx/death_left.png", frametime: 100, height: 64, width: 64, frames: 6},
-    deathRight: {file: "../gfx/death_right.png", frametime: 100, height: 64, width: 64, frames: 6},
+    slimeWalk: {file: "./gfx/slime.png", frametime: 100, height: 32, width: 32, frames: 4},
+    skeletonLeft: {file: "./gfx/skeleton_left.png", frametime: 120, height: 32, width: 32, frames: 6},
+    skeletonRight: {file: "./gfx/skeleton_right.png", frametime: 120, height: 32, width: 32, frames: 6},
+    goblinLeft: {file: "./gfx/goblin_left.png", frametime: 80, height: 32, width: 32, frames: 6},
+    goblinRight: {file: "./gfx/goblin_right.png", frametime: 80, height: 32, width: 32, frames: 6},
+    wispLeft: {file: "./gfx/wisp_left.png", frametime: 100, height: 32, width: 32, frames: 6},
+    wispRight: {file: "./gfx/wisp_right.png", frametime: 100, height: 32, width: 32, frames: 6},
+    deathLeft: {file: "./gfx/death_left.png", frametime: 100, height: 64, width: 64, frames: 6},
+    deathRight: {file: "./gfx/death_right.png", frametime: 100, height: 64, width: 64, frames: 6},
 };
 
 export function newAnimation(animation) {

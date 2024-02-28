@@ -5,14 +5,14 @@ import { towersData } from '../towers.js';
 import { gold } from './player.js';
 // Archer shop icons
 const btnArcherImg = new Image();
-btnArcherImg.src = '../gfx/shop_archer.png';
+btnArcherImg.src = './gfx/shop_archer.png';
 const btnArcherUpImg = new Image();
-btnArcherUpImg.src = '../gfx/shoparcherUp.png';
+btnArcherUpImg.src = './gfx/shoparcherUp.png';
 // Mage shop icons
 const btnMageImg = new Image();
-btnMageImg.src = '../gfx/shop_mage.png';
+btnMageImg.src = './gfx/shop_mage.png';
 const btnMageUpImg = new Image();
-btnMageUpImg.src = '../gfx/shopmageUp.png';
+btnMageUpImg.src = './gfx/shopmageUp.png';
 
 export const btnFirst = {
 	position: { x: 780, y: 200 },

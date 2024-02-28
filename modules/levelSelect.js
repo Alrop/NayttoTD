@@ -29,11 +29,11 @@ class LevelSelectButton {
 }
 
 const level1image = new Image();
-level1image.src = '../gfx/td_level1.png';
+level1image.src = './gfx/td_level1.png';
 const level2image = new Image();
-level2image.src = '../gfx/td_level2.png';
+level2image.src = './gfx/td_level2.png';
 const level3image = new Image();
-level3image.src = '../gfx/td_level3.png';
+level3image.src = './gfx/td_level3.png';
 
 const level1Button = new LevelSelectButton(1, 50, 100, level1image);
 const level2Button = new LevelSelectButton(2, 350, 100, level2image);

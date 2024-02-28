@@ -6,18 +6,18 @@ import { Projectile } from './projectile.js';
 
 // Archer tower and projectile images
 const archerImg = new Image();
-archerImg.src = '../gfx/tower_archer.png';
+archerImg.src = './gfx/tower_archer.png';
 const archerUpImg = new Image();
-archerUpImg.src = '../gfx/tower_archerUp.png';
+archerUpImg.src = './gfx/tower_archerUp.png';
 const arrowImg = new Image();
-arrowImg.src = '../gfx/projectile.png';
+arrowImg.src = './gfx/projectile.png';
 // Mage tower and projectile images
 const mageImg = new Image();
-mageImg.src = '../gfx/tower_mage.png';
+mageImg.src = './gfx/tower_mage.png';
 const mageUpImg = new Image();
-mageUpImg.src = '../gfx/tower_mageUp.png';
+mageUpImg.src = './gfx/tower_mageUp.png';
 const magicImg = new Image();
-magicImg.src = '../gfx/projectile_magic.png';
+magicImg.src = './gfx/projectile_magic.png';
 
 export const towersData = {
 	archer: {
