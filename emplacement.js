@@ -1,5 +1,5 @@
 /** @format */
-import { ctx, tileSize } from '../main.js';
+import { ctx, tileSize } from './main.js';
 import { mousePos, activeTile } from './modules/utils.js';
 import { shopMenu, upgradeMenu, btnFirst, btnSecond } from './modules/ui.js';
 import { towerPlace } from './modules/level.js';

@@ -1,6 +1,6 @@
 /** @format */
 
-import { ctx, tileSize } from '../main.js';
+import { ctx, tileSize } from './main.js';
 import { deltaTime } from './main.js';
 import { Projectile } from './projectile.js';
 
